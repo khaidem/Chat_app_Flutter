@@ -11,6 +11,8 @@ class GoogleSigInProvider with ChangeNotifier {
   String? email;
   String? password;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future googleUser() async {
     try {
       final googleUser = await googleSignIn.signIn();
@@ -39,18 +41,44 @@ class GoogleSigInProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future onLoginButtonPressedEvent() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
+  // void googleSign() {}
+
+  // Future onLoginButtonPressedEvent() async {
+  //   //  FirebaseAuth auth = FirebaseAuth.instance;
+  //   GoogleSignIn googleSignIn = GoogleSignIn();
+  //   try {
+  //     GoogleSignInAccount? result = await googleSignIn.signIn();
+
+  //     name = result!.displayName;
+  //     email = result.email;
+  //     password = result.id;
+
+  //     print(result);
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+
+  Future signOut() async {
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> verifyPhoneNumber(String phonNumber) async {
+    PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential phoneAuthCredential) async {};
+    PhoneVerificationFailed verificationFailed = (FirebaseAuthException) {};
+    PhoneCodeSent codeSent =
+        (String verfication, [int? forceResendingToken]) {};
+    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verification) {};
     try {
-      GoogleSignInAccount? result = await googleSignIn.signIn();
-
-      name = result!.displayName;
-      email = result.email;
-      password = result.id;
-
-      print(result);
-    } catch (error) {
-      print(error);
-    }
+      await _auth.verifyPhoneNumber(
+          phoneNumber: phonNumber,
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    } catch (e) {}
   }
 }

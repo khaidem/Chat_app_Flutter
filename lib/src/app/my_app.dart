@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
+import 'package:goole_sigin_firebase/src/Home/pages/otp_verfication.page.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/login_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../Home/logic/provider/google_sigin.provider.dart';
-import '../Home/pages/google_sigin.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -19,7 +21,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const GoogleSigInPage(),
+        home: const HomePage(),
+        routes: {
+          LogInWidget.routeName: (ctx) => const LogInWidget(),
+          HomePage.routeName: (ctx) => const HomePage(),
+          OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage()
+        },
       ),
     );
   }
