@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/phone_number_verification.widget.dart';
 import 'package:provider/provider.dart';
 
 class SigInWidget extends StatefulWidget {
@@ -12,10 +14,6 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  final TextEditingController phoneNumber = TextEditingController();
-  TextEditingController countryCode = TextEditingController();
-  var phone = '';
-
   String verificationIdReceived = '';
 
   @override
@@ -25,86 +23,48 @@ class _SigInWidgetState extends State<SigInWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      phone = value;
-                    },
-                    keyboardType: TextInputType.phone,
-                    controller: phoneNumber,
-                    decoration: InputDecoration(
-                      hintText: 'PhoneNumber',
-                      labelText: 'PhoneNumber',
-                      labelStyle: const TextStyle(color: Colors.black),
-                      prefixIcon: const Icon(Icons.person),
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(color: Colors.red),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: Colors.blue,
-                          width: 2.0,
-                        ),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.black38,
-                        ),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(PhoneNumberVerificationWidget.routeName);
+              },
+              icon: const Icon(FontAwesomeIcons.phone),
+              label: const Text('Continue with Phone Number'),
+            ),
+            Row(children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 75.0, right: 20.0),
+                  child: const Divider(
+                    thickness: 2,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    final veri = context.read<AuthProvider>();
-                    veri.verificationPhone(context, phoneNumber.text);
-                    // await FirebaseAuth.instance.verifyPhoneNumber(
-                    //     phoneNumber: phoneNumber.text,
-                    //     verificationCompleted:
-                    //         (PhoneAuthCredential credentail) {},
-                    //     verificationFailed: (FirebaseAuthException e) {},
-                    //     codeSent: (String verificationID, int? resendToken) {
-                    //       SigInWidget.verify = verificationID;
-                    //       Navigator.of(context)
-                    //           .pushNamed(OtpVerificationPage.routeName);
-                    //     },
-                    //     codeAutoRetrievalTimeout: (String verification) {});
-                  },
-                  child: const Text('Phone Auth'),
+              ),
+              const Text("OR"),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 20.0, right: 75.0),
+                  child: const Divider(
+                    thickness: 2,
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    final provider = context.read<AuthProvider>();
-                    provider.googleUser().then(
-                          (value) => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) {
-                                return const HomePage();
-                              },
-                            ),
-                          ),
-                        );
-                  },
-                  child: const Text('Sigin With Google'),
-                ),
-              ],
+              ),
+            ]),
+            ElevatedButton.icon(
+              onPressed: () {
+                final provider = context.read<AuthProvider>();
+                provider.googleUser().then(
+                      (value) => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) {
+                            return const HomePage();
+                          },
+                        ),
+                      ),
+                    );
+              },
+              icon: const Icon(FontAwesomeIcons.google),
+              label: const Text('Continue with Google SigIn'),
             )
           ],
         ),

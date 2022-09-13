@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,6 +16,7 @@ class AuthProvider with ChangeNotifier {
   String? name;
   String? email;
   String? password;
+  var phone = '+91';
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -21,6 +24,8 @@ class AuthProvider with ChangeNotifier {
   Future googleUser() async {
     try {
       final googleUser = await googleSignIn.signIn();
+      final ggAuth = await googleUser!.authentication;
+      log(ggAuth.idToken.toString());
       if (googleUser == null) return;
       _user = googleUser;
       final googleAuth = await googleUser.authentication;
@@ -43,18 +48,7 @@ class AuthProvider with ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-//** Phone OtpVerification */
-  Future otpVerification(String code) async {
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: SigInWidget.verify, smsCode: code);
-      await _auth.signInWithCredential(credential);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  //*** Verification Phone */
+  //***For Sending  Verification Phone */
   Future verificationPhone(BuildContext context, String phoneNumber) async {
     try {
       await _auth.verifyPhoneNumber(
@@ -71,6 +65,17 @@ class AuthProvider with ChangeNotifier {
           codeAutoRetrievalTimeout: (String verification) {});
     } catch (error) {
       debugPrint(error.toString());
+    }
+  }
+
+//** After Receive  Phone OtpVerification */
+  Future otpVerification(String code) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: SigInWidget.verify, smsCode: code);
+      await _auth.signInWithCredential(credential);
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 }

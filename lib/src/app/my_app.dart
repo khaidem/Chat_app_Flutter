@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
 import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/phone_number_verification.widget.dart';
 import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
 import 'package:provider/provider.dart';
 
@@ -22,11 +23,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        debugShowCheckedModeBanner: false,
         home: const SigInWidget(),
         routes: {
           OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage(),
           DataFoundPage.routeName: (ctx) => const DataFoundPage(),
           HomePage.routeName: (ctx) => const HomePage(),
+          PhoneNumberVerificationWidget.routeName: (ctx) =>
+              const PhoneNumberVerificationWidget()
         },
       ),
     );
