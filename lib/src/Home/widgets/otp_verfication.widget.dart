@@ -61,7 +61,7 @@ class OtpVerificationPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "OTP Verification",
+              "Enter OTP ",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(

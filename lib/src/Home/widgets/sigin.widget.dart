@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
@@ -15,6 +16,21 @@ class SigInWidget extends StatefulWidget {
 
 class _SigInWidgetState extends State<SigInWidget> {
   String verificationIdReceived = '';
+  bool isSignedIn = false;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+//*** For GoogleSigIn Function */
+
+  void googleSigIn() async {
+    final provider = context.read<AuthProvider>();
+
+    await provider.googleUser().then(
+          (value) => Navigator.pushNamedAndRemoveUntil(
+              context, HomePage.routeName, (route) => false),
+        );
+    // Navigator.of(context).pushNamed(HomePage.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +66,9 @@ class _SigInWidgetState extends State<SigInWidget> {
                 ),
               ),
             ]),
-            ElevatedButton.icon(
+            OutlinedButton.icon(
               onPressed: () {
-                final provider = context.read<AuthProvider>();
-                provider.googleUser().then(
-                      (value) => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) {
-                            return const HomePage();
-                          },
-                        ),
-                      ),
-                    );
+                googleSigIn();
               },
               icon: const Icon(FontAwesomeIcons.google),
               label: const Text('Continue with Google SigIn'),

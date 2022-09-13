@@ -16,6 +16,8 @@ class _PhoneNumberVerificationWidgetState
     extends State<PhoneNumberVerificationWidget> {
   TextEditingController countryController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
+  TextEditingController phoneController = TextEditingController();
+
   var phone = '';
   @override
   void initState() {
@@ -69,13 +71,17 @@ class _PhoneNumberVerificationWidgetState
                     ),
                     const Text(
                       "|",
-                      style: TextStyle(fontSize: 33, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 33,
+                        color: Colors.grey,
+                      ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
+                        controller: phoneController,
                         onChanged: (value) {
                           phone = value;
                         },
@@ -111,9 +117,13 @@ class _PhoneNumberVerificationWidgetState
                       final veri = context.read<AuthProvider>();
                       veri.verificationPhone(
                           context, countryController.text + phone);
-                      await Future.delayed(const Duration(seconds: 2));
+                      await Future.delayed(
+                        const Duration(seconds: 2),
+                      );
                     } catch (error) {
-                      debugPrint(error.toString());
+                      debugPrint(
+                        error.toString(),
+                      );
                     }
                   },
                   child: _isLoading

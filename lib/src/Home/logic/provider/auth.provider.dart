@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,10 +22,16 @@ class AuthProvider with ChangeNotifier {
   Future googleUser() async {
     try {
       final googleUser = await googleSignIn.signIn();
-      final ggAuth = await googleUser!.authentication;
-      log(ggAuth.idToken.toString());
-      if (googleUser == null) return;
+
+      ///** For Printing Out Token For GoogleSigIn */
+
+      // final ggAuth = await googleUser!.authentication;
+      // log(ggAuth.idToken.toString());
+
       _user = googleUser;
+      if (googleUser == null) {
+        return;
+      }
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -35,8 +39,9 @@ class AuthProvider with ChangeNotifier {
       );
       debugPrint(credential.toString());
       await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (error) {
+    } on FirebaseException catch (error) {
       debugPrint(error.toString());
+      rethrow;
     }
 
     notifyListeners();
@@ -44,7 +49,7 @@ class AuthProvider with ChangeNotifier {
 
   ///** For LogOut Firebase */
   Future signOut() async {
-    await googleSignIn.disconnect();
+    await googleSignIn.signOut();
     FirebaseAuth.instance.signOut();
   }
 
