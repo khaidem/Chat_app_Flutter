@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   const OtpVerificationPage({Key? key}) : super(key: key);
@@ -11,43 +10,9 @@ class OtpVerificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController OtpSend = TextEditingController();
-    String verificationIdReceived = '';
-    String? verificationCode;
+
     final FirebaseAuth auth = FirebaseAuth.instance;
-
-    void verifyPin(String pin) async {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationIdReceived, smsCode: pin);
-
-      try {
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        const snackBar = SnackBar(content: Text("Login Sucess"));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      } on FirebaseAuthException catch (e) {
-        final snackBar = SnackBar(content: Text("${e.message}"));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        log(snackBar.toString());
-      }
-    }
-
-    Future<void> getPin(String pin) async {
-      try {
-        await FirebaseAuth.instance
-            .signInWithCredential(PhoneAuthProvider.credential(
-                verificationId: verificationCode!, smsCode: pin))
-            .then((value) async {
-          if (value.user != null) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const DataFoundPage()),
-                (route) => false);
-          }
-        });
-      } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.toString())));
-      }
-    }
+    var code = '';
 
     return Scaffold(
       body: Center(
@@ -55,6 +20,9 @@ class OtpVerificationPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextFormField(
+            onChanged: (value) {
+              code = value;
+            },
             keyboardType: TextInputType.phone,
             controller: OtpSend,
             decoration: InputDecoration(
@@ -92,10 +60,18 @@ class OtpVerificationPage extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              getPin;
+            onPressed: () async {
+              try {
+                PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                    verificationId: SigInWidget.verify, smsCode: code);
+                await auth.signInWithCredential(credential);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, DataFoundPage.routeName, (route) => false);
+              } catch (e) {
+                print(e.toString());
+              }
             },
-            child: const Text('LogOut'),
+            child: const Text('OTp Send'),
           ),
         ],
       )),

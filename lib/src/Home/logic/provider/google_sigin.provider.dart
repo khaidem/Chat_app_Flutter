@@ -28,36 +28,9 @@ class GoogleSigInProvider with ChangeNotifier {
     } catch (error) {
       print(error.toString());
     }
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return;
-    _user = googleUser;
-    final googleAuth = await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    print(credential);
-    await FirebaseAuth.instance.signInWithCredential(credential);
+
     notifyListeners();
   }
-
-  // void googleSign() {}
-
-  // Future onLoginButtonPressedEvent() async {
-  //   //  FirebaseAuth auth = FirebaseAuth.instance;
-  //   GoogleSignIn googleSignIn = GoogleSignIn();
-  //   try {
-  //     GoogleSignInAccount? result = await googleSignIn.signIn();
-
-  //     name = result!.displayName;
-  //     email = result.email;
-  //     password = result.id;
-
-  //     print(result);
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
 
   Future signOut() async {
     await googleSignIn.disconnect();

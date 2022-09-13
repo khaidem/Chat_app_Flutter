@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/login_widget.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
+import 'package:goole_sigin_firebase/src/Home/logic/provider/google_sigin.provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,24 +9,22 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            return const LogInWidget();
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text('Something went Wrong'),
-            );
-          } else {
-            return const SigInWidget();
-          }
-        },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(user.displayName!),
+            ElevatedButton(
+              onPressed: () {
+                context.read<GoogleSigInProvider>().signOut();
+                Navigator.pop(context);
+              },
+              child: const Text('Logout'),
+            )
+          ],
+        ),
       ),
     );
   }
