@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
+import 'package:provider/provider.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   const OtpVerificationPage({Key? key}) : super(key: key);
@@ -9,9 +9,7 @@ class OtpVerificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController OtpSend = TextEditingController();
-
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    TextEditingController otpSend = TextEditingController();
     var code = '';
 
     return Scaffold(
@@ -24,7 +22,7 @@ class OtpVerificationPage extends StatelessWidget {
               code = value;
             },
             keyboardType: TextInputType.phone,
-            controller: OtpSend,
+            controller: otpSend,
             decoration: InputDecoration(
               hintText: 'OtpVerification',
               labelText: 'OtpVerification',
@@ -60,16 +58,20 @@ class OtpVerificationPage extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () async {
-              try {
-                PhoneAuthCredential credential = PhoneAuthProvider.credential(
-                    verificationId: SigInWidget.verify, smsCode: code);
-                await auth.signInWithCredential(credential);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, DataFoundPage.routeName, (route) => false);
-              } catch (e) {
-                print(e.toString());
-              }
+            onPressed: () {
+              final otpSend = context.read<AuthProvider>();
+              otpSend.otpVerification(code);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, DataFoundPage.routeName, (route) => false);
+              // try {
+              //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
+              //       verificationId: SigInWidget.verify, smsCode: code);
+              //   await auth.signInWithCredential(credential);
+              //   Navigator.pushNamedAndRemoveUntil(
+              //       context, DataFoundPage.routeName, (route) => false);
+              // } catch (e) {
+              //   print(e.toString());
+              // }
             },
             child: const Text('OTp Send'),
           ),

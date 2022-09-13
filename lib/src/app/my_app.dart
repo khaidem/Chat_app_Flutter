@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
-import 'package:goole_sigin_firebase/src/Home/pages/otp_verfication.page.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/login_widget.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
 import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
 import 'package:provider/provider.dart';
 
-import '../Home/logic/provider/google_sigin.provider.dart';
+import '../Home/logic/provider/auth.provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => GoogleSigInProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -25,8 +24,6 @@ class MyApp extends StatelessWidget {
         ),
         home: const SigInWidget(),
         routes: {
-          LogInWidget.routeName: (ctx) => const LogInWidget(),
-          // HomePage.routeName: (ctx) => const HomePage(),
           OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage(),
           DataFoundPage.routeName: (ctx) => const DataFoundPage(),
           HomePage.routeName: (ctx) => const HomePage(),

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.goole_sigin_firebase">
    <application
-        android:label="goole_sigin_firebase"
+        android:label="google_sigin_firebase"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

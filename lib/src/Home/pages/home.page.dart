@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/logic/provider/google_sigin.provider.dart';
+import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
             Text(user.displayName!),
             ElevatedButton(
               onPressed: () {
-                context.read<GoogleSigInProvider>().signOut();
+                context.read<AuthProvider>().signOut();
                 Navigator.pop(context);
               },
               child: const Text('Logout'),

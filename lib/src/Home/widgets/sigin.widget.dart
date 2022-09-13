@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/logic/provider/google_sigin.provider.dart';
+import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
-import 'package:goole_sigin_firebase/src/Home/pages/otp_verfication.page.dart';
 import 'package:provider/provider.dart';
 
 class SigInWidget extends StatefulWidget {
@@ -17,10 +15,8 @@ class _SigInWidgetState extends State<SigInWidget> {
   final TextEditingController phoneNumber = TextEditingController();
   TextEditingController countryCode = TextEditingController();
   var phone = '';
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  String verificationIdReceived = '';
 
-  ///***** */
+  String verificationIdReceived = '';
 
   @override
   Widget build(BuildContext context) {
@@ -76,24 +72,26 @@ class _SigInWidgetState extends State<SigInWidget> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: phoneNumber.text,
-                        verificationCompleted:
-                            (PhoneAuthCredential credentail) {},
-                        verificationFailed: (FirebaseAuthException e) {},
-                        codeSent: (String verificationID, int? resendToken) {
-                          SigInWidget.verify = verificationID;
-                          Navigator.of(context)
-                              .pushNamed(OtpVerificationPage.routeName);
-                        },
-                        codeAutoRetrievalTimeout: (String verification) {});
+                  onPressed: () {
+                    final veri = context.read<AuthProvider>();
+                    veri.verificationPhone(context, phoneNumber.text);
+                    // await FirebaseAuth.instance.verifyPhoneNumber(
+                    //     phoneNumber: phoneNumber.text,
+                    //     verificationCompleted:
+                    //         (PhoneAuthCredential credentail) {},
+                    //     verificationFailed: (FirebaseAuthException e) {},
+                    //     codeSent: (String verificationID, int? resendToken) {
+                    //       SigInWidget.verify = verificationID;
+                    //       Navigator.of(context)
+                    //           .pushNamed(OtpVerificationPage.routeName);
+                    //     },
+                    //     codeAutoRetrievalTimeout: (String verification) {});
                   },
                   child: const Text('Phone Auth'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    final provider = context.read<GoogleSigInProvider>();
+                    final provider = context.read<AuthProvider>();
                     provider.googleUser().then(
                           (value) => Navigator.of(context).push(
                             MaterialPageRoute(
