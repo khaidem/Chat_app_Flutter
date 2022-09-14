@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,14 +24,18 @@ class AuthProvider with ChangeNotifier {
   Future googleUser() async {
     try {
       final googleUser = await googleSignIn.signIn();
+      // if (googleUser == null) {
+      //   return;
+      // }
 
       ///** For Printing Out Token For GoogleSigIn */
 
-      // final ggAuth = await googleUser!.authentication;
-      // log(ggAuth.idToken.toString());
+      final ggAuth = await googleUser!.authentication;
+
+      log(ggAuth.idToken.toString());
 
       _user = googleUser;
-      if (googleUser == null) {
+      if (_user == null) {
         return;
       }
       final googleAuth = await googleUser.authentication;

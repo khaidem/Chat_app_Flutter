@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context.read<AuthProvider>().signOut();
-                Navigator.pop(context);
+                Navigator.of(context).pushReplacementNamed('/');
               },
               child: const Text('Logout'),
             )
