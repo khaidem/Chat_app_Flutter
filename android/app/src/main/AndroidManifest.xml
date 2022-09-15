@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.goole_sigin_firebase">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Auth_app"
         android:name="${applicationName}"
