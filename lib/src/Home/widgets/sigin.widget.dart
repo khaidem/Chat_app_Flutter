@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
+import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/phone_verification.widget.dart';
 import 'package:provider/provider.dart';
-
-import '../example.dart';
 
 class SigInWidget extends StatefulWidget {
   const SigInWidget({Key? key}) : super(key: key);

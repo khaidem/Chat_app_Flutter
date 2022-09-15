@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
@@ -64,7 +65,16 @@ class AuthProvider with ChangeNotifier {
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
-          verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+          verificationCompleted:
+              (PhoneAuthCredential phoneAuthCredential) async {
+            await _auth
+                .signInWithCredential(phoneAuthCredential)
+                .then((value) async {
+              if (value.user != null) {
+                debugPrint('User logged in');
+              }
+            });
+          },
           verificationFailed: (FirebaseException e) {
             debugPrint(e.toString());
           },
@@ -75,7 +85,9 @@ class AuthProvider with ChangeNotifier {
           },
           codeAutoRetrievalTimeout: (String verification) {});
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint(
+        error.toString(),
+      );
     }
   }
 
@@ -86,7 +98,9 @@ class AuthProvider with ChangeNotifier {
           verificationId: SigInWidget.verify, smsCode: code);
       await _auth.signInWithCredential(credential);
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint(
+        e.toString(),
+      );
     }
   }
 }

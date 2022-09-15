@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
+import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/phone_verification.widget.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
 import 'package:provider/provider.dart';
 
-import '../Home/example.dart';
+import '../Home/logic/provider/auth.provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

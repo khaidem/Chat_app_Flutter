@@ -1,18 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
 import '../example.dart';
 
-class OtpVerificationPage extends StatelessWidget {
+class OtpVerificationPage extends StatefulWidget {
   const OtpVerificationPage({Key? key}) : super(key: key);
   static const routeName = '/OtpVerificationPage';
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController otpSend = TextEditingController();
-    var code = '';
+  State<OtpVerificationPage> createState() => _OtpVerificationPageState();
+}
 
+class _OtpVerificationPageState extends State<OtpVerificationPage> {
+  TextEditingController otpSend = TextEditingController();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final user = FirebaseAuth.instance.currentUser!.phoneNumber;
+
+  var code = '';
+  bool isLoading = false;
+  bool enableButton = false;
+
+  @override
+  void dispose() {
+    otpSend.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -40,12 +57,13 @@ class OtpVerificationPage extends StatelessWidget {
     );
 
     return Scaffold(
+      key: scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed('/');
           },
           icon: const Icon(
             Icons.arrow_back_ios_rounded,
@@ -71,12 +89,32 @@ class OtpVerificationPage extends StatelessWidget {
               height: 30,
             ),
             Pinput(
+              pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
               length: 6,
               defaultPinTheme: defaultPinTheme,
               focusedPinTheme: focusedPinTheme,
               submittedPinTheme: submittedPinTheme,
               showCursor: true,
-              onCompleted: (pin) => debugPrint(pin),
+              onCompleted: (pin) {
+                // if (pin.isEmpty) {
+                //   return;
+                // } else {
+                //   Navigator.of(context).pushNamedAndRemoveUntil(
+                //       HomePage.routeName, (route) => false);
+                // }
+              },
+              onChanged: (value) {
+                if (value.length == 6) {
+                  setState(
+                    () {
+                      enableButton = true;
+                      code = value;
+                    },
+                  );
+                } else {
+                  enableButton = false;
+                }
+              },
             ),
             const SizedBox(
               height: 10,
@@ -85,13 +123,47 @@ class OtpVerificationPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 primary: Colors.green.shade600,
               ),
-              onPressed: () {
-                final otpSend = context.read<AuthProvider>();
-                otpSend.otpVerification(code);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, DataFoundPage.routeName, (route) => false);
-              },
-              child: const Text('Verify Phone Number'),
+              onPressed: enableButton
+                  ? () async {
+                      if (mounted) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                      }
+
+                      try {
+                        final otpSend = context.read<AuthProvider>();
+                        otpSend.otpVerification(code);
+
+                        await Future.delayed(
+                          const Duration(seconds: 2),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Success'),
+                            duration: Duration(milliseconds: 300),
+                          ),
+                        );
+                      } catch (error) {
+                        print(error.toString());
+                      }
+                      if (mounted) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    }
+                  : null,
+              child: isLoading
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 1.5,
+                      ),
+                    )
+                  : const Text("Verify OTP"),
             ),
           ],
         ),
