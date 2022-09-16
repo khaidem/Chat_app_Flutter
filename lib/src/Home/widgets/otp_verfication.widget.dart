@@ -87,7 +87,6 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               height: 30,
             ),
             Pinput(
-              // pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
               androidSmsAutofillMethod:
                   AndroidSmsAutofillMethod.smsRetrieverApi,
               length: 6,

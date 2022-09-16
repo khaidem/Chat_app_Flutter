@@ -2,11 +2,9 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
 
-import '../../widgets/sigin.widget.dart';
+import '../../example.dart';
 
 class AuthProvider with ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -21,14 +19,9 @@ class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 //** For Google SigIn */
-  Future googleUser() async {
+  Future googleSigIn() async {
     try {
       final googleUser = await googleSignIn.signIn();
-      // if (googleUser == null) {
-      //   return;
-      // }
-
-      ///** For Printing Out Token For GoogleSigIn */
 
       final ggAuth = await googleUser!.authentication;
 
@@ -43,7 +36,9 @@ class AuthProvider with ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      debugPrint(credential.toString());
+      debugPrint(
+        credential.toString(),
+      );
       await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
@@ -60,14 +55,11 @@ class AuthProvider with ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
+//** Show error Form Firebase Exception */
   _showDialog(context, String error) {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        // title: Center(
-        //   child: SizedBox(s
-        //       height: 50, child: Image.asset('assets/images/errorIcon.png')),
-        // ),
         content: Text(error),
         actions: [
           ElevatedButton(
@@ -99,7 +91,6 @@ class AuthProvider with ChangeNotifier {
           },
           verificationFailed: (FirebaseException e) {
             _showDialog(context, e.toString());
-            // EasyLoading.showError('Error: $e');
             log(e.toString());
           },
           codeSent: (String verificationId, int? resendToken) {

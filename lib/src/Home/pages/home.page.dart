@@ -9,13 +9,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(user.displayName!),
+            Text(user == null ? '' : user.displayName!),
             ElevatedButton(
               onPressed: () {
                 context.read<AuthProvider>().signOut();

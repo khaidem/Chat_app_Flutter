@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/pages/data-found.page.dart';
-import 'package:goole_sigin_firebase/src/Home/pages/home.page.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/phone_verification.widget.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/sigin.widget.dart';
+import 'package:goole_sigin_firebase/src/Home/logic/provider/firebase_data.provider.dart';
+
 import 'package:provider/provider.dart';
 
-import '../Home/logic/provider/auth.provider.dart';
+import '../Home/example.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,7 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FirebaseDataProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: const SigInWidget(),
+        home: const ChatScreenPage(),
         routes: {
           OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage(),
           DataFoundPage.routeName: (ctx) => const DataFoundPage(),
