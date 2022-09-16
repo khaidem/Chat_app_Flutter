@@ -39,6 +39,22 @@ class _SigInWidgetState extends State<SigInWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text('Wellcome Back'),
+              ],
+            ),
+            // const SizedBox(
+            //   height: 10,
+            //   child: Icon(
+            //     Icons.flutter_dash,
+            //     color: Colors.orange,
+            //   ),
+            // ),
+            const SizedBox(
+              height: 10,
+            ),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)

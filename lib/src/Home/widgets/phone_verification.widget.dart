@@ -132,14 +132,12 @@ class _PhoneNumberVerificationWidgetState
                         }
 
                         try {
-                          await context
-                              .watch()<AuthProvider>()
-                              .verificationPhone(
+                          await context.read<AuthProvider>().verificationPhone(
                                 context,
                                 countryController.text + phone,
                               );
                           await Future.delayed(
-                            const Duration(seconds: 2),
+                            const Duration(seconds: 5),
                           );
                         } catch (error) {
                           debugPrint(

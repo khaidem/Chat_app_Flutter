@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,6 @@ class OtpVerificationPage extends StatefulWidget {
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   TextEditingController otpSend = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final user = FirebaseAuth.instance.currentUser!.phoneNumber;
 
   var code = '';
   bool isLoading = false;
@@ -89,7 +87,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               height: 30,
             ),
             Pinput(
-              pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+              // pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+              androidSmsAutofillMethod:
+                  AndroidSmsAutofillMethod.smsRetrieverApi,
               length: 6,
               defaultPinTheme: defaultPinTheme,
               focusedPinTheme: focusedPinTheme,
@@ -133,17 +133,19 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
                       try {
                         final otpSend = context.read<AuthProvider>();
-                        otpSend.otpVerification(code);
+                        otpSend.otpVerification(code).then((value) =>
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                DataFoundPage.routeName, (route) => false));
 
                         await Future.delayed(
-                          const Duration(seconds: 2),
+                          const Duration(seconds: 3),
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Success'),
-                            duration: Duration(milliseconds: 300),
-                          ),
-                        );
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text('Success'),
+                        //     duration: Duration(milliseconds: 300),
+                        //   ),
+                        // );
                       } catch (error) {
                         print(error.toString());
                       }
