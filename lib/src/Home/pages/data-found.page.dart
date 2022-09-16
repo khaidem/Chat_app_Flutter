@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../example.dart';
 
 class DataFoundPage extends StatefulWidget {
   const DataFoundPage({
@@ -18,7 +21,18 @@ class _DataFoundPageState extends State<DataFoundPage> {
 
     return Scaffold(
       body: Center(
-        child: Text(user!),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(user!),
+            ElevatedButton(
+                onPressed: () {
+                  context.read<AuthProvider>().signOut();
+                  Navigator.of(context).pushReplacementNamed('/');
+                },
+                child: const Text('LogOut'))
+          ],
+        ),
       ),
     );
   }

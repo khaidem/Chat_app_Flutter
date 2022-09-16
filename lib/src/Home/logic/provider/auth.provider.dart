@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:goole_sigin_firebase/src/Home/widgets/otp_verfication.widget.dart';
@@ -57,7 +56,29 @@ class AuthProvider with ChangeNotifier {
   ///** For LogOut Firebase */
   Future signOut() async {
     await googleSignIn.signOut();
+    log('LogOut');
     FirebaseAuth.instance.signOut();
+  }
+
+  _showDialog(context, String error) {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        // title: Center(
+        //   child: SizedBox(s
+        //       height: 50, child: Image.asset('assets/images/errorIcon.png')),
+        // ),
+        content: Text(error),
+        actions: [
+          ElevatedButton(
+            child: const Text('Close me!'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   //***For Sending  Verification Phone */
@@ -65,6 +86,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
+          timeout: const Duration(seconds: 5),
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
             await _auth
@@ -76,7 +98,9 @@ class AuthProvider with ChangeNotifier {
             });
           },
           verificationFailed: (FirebaseException e) {
-            debugPrint(e.toString());
+            _showDialog(context, e.toString());
+            // EasyLoading.showError('Error: $e');
+            log(e.toString());
           },
           codeSent: (String verificationId, int? resendToken) {
             SigInWidget.verify = verificationId;

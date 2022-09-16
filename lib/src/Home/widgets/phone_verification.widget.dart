@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +85,8 @@ class _PhoneNumberVerificationWidgetState
                   const SizedBox(
                     width: 10,
                   ),
-                  Expanded(
+                  SizedBox(
+                    width: 300,
                     child: TextFormField(
                       // maxLength: 10,
                       controller: phoneController,
@@ -139,7 +141,7 @@ class _PhoneNumberVerificationWidgetState
                           await Future.delayed(
                             const Duration(seconds: 5),
                           );
-                        } catch (error) {
+                        } on FirebaseAuthException catch (error) {
                           debugPrint(
                             error.toString(),
                           );
