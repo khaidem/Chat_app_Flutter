@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class OtpVerificationPage extends StatefulWidget {
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   TextEditingController otpSend = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final _auth = FirebaseAuth.instance;
 
   var code = '';
   bool isLoading = false;
@@ -132,9 +134,19 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
                       try {
                         final otpSend = context.read<AuthProvider>();
-                        otpSend.otpVerification(code).then((value) =>
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                DataFoundPage.routeName, (route) => false));
+                        //  await FirebaseFirestore.instance
+                        //       .collection('user_accounts')
+                        //       .doc(_auth.currentUser!.uid)
+                        //       .set({
+                        //     'phone_number': phone,
+                        //   });
+
+                        otpSend.otpVerification(code).then(
+                              (value) => Navigator.of(context)
+                                  .pushNamedAndRemoveUntil(
+                                      DataFoundPage.routeName,
+                                      (route) => false),
+                            );
 
                         await Future.delayed(
                           const Duration(seconds: 3),

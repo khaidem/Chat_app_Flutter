@@ -17,20 +17,21 @@ class DataFoundPage extends StatefulWidget {
 class _DataFoundPageState extends State<DataFoundPage> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!.phoneNumber;
+    final user = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(user!),
+            Text(user.toString()),
             ElevatedButton(
-                onPressed: () {
-                  context.read<AuthProvider>().signOut();
-                  Navigator.of(context).pushReplacementNamed('/');
-                },
-                child: const Text('LogOut'))
+              onPressed: () {
+                context.read<AuthProvider>().signOut();
+                Navigator.of(context).pushReplacementNamed('/');
+              },
+              child: const Text('LogOut'),
+            )
           ],
         ),
       ),

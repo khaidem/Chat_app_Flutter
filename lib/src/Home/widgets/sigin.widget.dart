@@ -29,7 +29,6 @@ class _SigInWidgetState extends State<SigInWidget> {
           (value) => Navigator.pushNamedAndRemoveUntil(
               context, HomePage.routeName, (route) => false),
         );
-    // Navigator.of(context).pushNamed(HomePage.routeName);
   }
 
   @override

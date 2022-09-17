@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/logic/provider/firebase_data.provider.dart';
 
@@ -26,7 +27,15 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: const ChatScreenPage(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapShot) {
+            if (snapShot.hasData) {
+              return const DataFoundPage();
+            }
+            return const SigInWidget();
+          },
+        ),
         routes: {
           OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage(),
           DataFoundPage.routeName: (ctx) => const DataFoundPage(),

@@ -1,17 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class FirebaseDataProvider with ChangeNotifier {
-  List? contacts;
-  CollectionReference users =
-      FirebaseFirestore.instance.collection('user_accounts');
-
-  Future<void> addUserAccount(bool isActive, String email, String name,
-      String phoneNumber, String uid) {
+  Future<void> addUserAccount() {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('user_accounts');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid.toString();
+    final email = auth.currentUser!.email;
+    final name = auth.currentUser!.displayName;
+    final phoneNumber = auth.currentUser!.phoneNumber.toString();
+    final timeStnd = auth.currentUser!.metadata.toString();
+    final active = auth.currentUser!.isAnonymous;
     return users
         .add({
-          'active': isActive,
-          'created_at': Timestamp,
+          'active': active,
+          'created_at': timeStnd,
           'email': email,
           'name': name,
           'phone': phoneNumber,

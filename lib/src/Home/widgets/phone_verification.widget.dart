@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -138,6 +140,8 @@ class _PhoneNumberVerificationWidgetState
                                 context,
                                 countryController.text + phone,
                               );
+                          log(phone.toString());
+
                           await Future.delayed(
                             const Duration(seconds: 5),
                           );

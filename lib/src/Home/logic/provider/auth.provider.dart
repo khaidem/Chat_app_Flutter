@@ -14,7 +14,6 @@ class AuthProvider with ChangeNotifier {
   String? name;
   String? email;
   String? password;
-  var phone = '+91';
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -95,6 +94,7 @@ class AuthProvider with ChangeNotifier {
           },
           codeSent: (String verificationId, int? resendToken) {
             SigInWidget.verify = verificationId;
+
             Navigator.of(context).pushNamedAndRemoveUntil(
                 OtpVerificationPage.routeName, (route) => false);
           },
