@@ -2,7 +2,7 @@
     package="com.example.goole_sigin_firebase">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="Auth_app"
+        android:label="chat_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
