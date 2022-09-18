@@ -144,8 +144,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                         otpSend.otpVerification(code).then(
                               (value) => Navigator.of(context)
                                   .pushNamedAndRemoveUntil(
-                                      DataFoundPage.routeName,
-                                      (route) => false),
+                                      HomePage.routeName, (route) => false),
                             );
 
                         await Future.delayed(

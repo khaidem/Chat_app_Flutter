@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/logic/provider/firebase_data.provider.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/group_create.widget.dart';
 
 import 'package:provider/provider.dart';
 
@@ -17,9 +17,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => FirebaseDataProvider(),
-        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -31,17 +28,18 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapShot) {
             if (snapShot.hasData) {
-              return const DataFoundPage();
+              return const HomePage();
             }
             return const SigInWidget();
           },
         ),
         routes: {
           OtpVerificationPage.routeName: (ctx) => const OtpVerificationPage(),
-          DataFoundPage.routeName: (ctx) => const DataFoundPage(),
           HomePage.routeName: (ctx) => const HomePage(),
           PhoneNumberVerificationWidget.routeName: (ctx) =>
-              const PhoneNumberVerificationWidget()
+              const PhoneNumberVerificationWidget(),
+          GroupCreateWidget.routeName: (ctx) => const GroupCreateWidget(),
+          // SingleChatWidget.routeName: (ctx) => const SingleChatWidget(),
         },
       ),
     );
