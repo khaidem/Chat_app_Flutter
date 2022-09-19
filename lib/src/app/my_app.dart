@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/group_create.widget.dart';
 
 import 'package:provider/provider.dart';
 
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
           HomePage.routeName: (ctx) => const HomePage(),
           PhoneNumberVerificationWidget.routeName: (ctx) =>
               const PhoneNumberVerificationWidget(),
-          GroupCreateWidget.routeName: (ctx) => const GroupCreateWidget(),
+          // GroupCreateWidget.routeName: (ctx) => const GroupCreateWidget()
           // SingleChatWidget.routeName: (ctx) => const SingleChatWidget(),
         },
       ),

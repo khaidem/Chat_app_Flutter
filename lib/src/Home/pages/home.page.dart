@@ -1,27 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/logic/provider/auth.provider.dart';
-import 'package:goole_sigin_firebase/src/Home/widgets/single_chat.widget.dart';
 import 'package:provider/provider.dart';
 
-final database1 = FirebaseFirestore.instance;
-Future<QuerySnapshot> years = database1.collection('user_accounts').get();
+import '../example.dart';
+import 'message.page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   static const routeName = '/HomePage';
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection('group_chat');
+  final TextEditingController groupName = TextEditingController();
+
+  final _enterMessage = '';
+
+  void _sendSubmit() {
+    FocusScope.of(context).unfocus();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final CollectionReference collectionRef =
-        FirebaseFirestore.instance.collection('user_accounts');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat App'),
+        title: const Text('Group Chat'),
       ),
-      body: StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder(
         stream: collectionRef.snapshots(),
-        builder: (ctx, AsyncSnapshot<QuerySnapshot> shapShot) {
+        builder: (ctx, AsyncSnapshot shapShot) {
           if (shapShot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -42,18 +53,16 @@ class HomePage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => SingleChatWidget(
-                          name: chatDoc[index]['name'],
-                        ),
-                        settings: RouteSettings(
-                          arguments: chatDoc[index],
-                        ),
+                        builder: (ctx) => const MessagePage(),
+                        // settings: RouteSettings(
+                        //   arguments: chatDoc[index],
+                        // ),
                       ),
                     );
                   },
                   child: ListTile(
                     title: Text(
-                      chatDoc[index]['name'],
+                      chatDoc[index]['goup_name'],
                     ),
                   ),
                 );
@@ -65,23 +74,59 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<AuthProvider>().getData();
-          // Navigator.pushNamed(context, GroupCreateWidget.routeName);
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Center(
+                child: SizedBox(
+                  height: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                    child: TextFormField(
+                      controller: groupName,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Enter group Name",
+                        labelText: 'Enter group Name',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // content: const Text('Username or password wrong'),
+              actions: [
+                Center(
+                  child: ElevatedButton(
+                    child: const Text('Submit'),
+                    onPressed: () {
+                      // context.read<AuthProvider>().getData();
+                      FocusScope.of(context).unfocus();
+
+                      context
+                          .read<AuthProvider>()
+                          .getGroup(groupName.text.trim());
+
+                      Navigator.of(context).pop();
+                      groupName.clear();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
         },
         child: const Icon(Icons.group_add),
       ),
     );
-  }
-
-  getUser(AsyncSnapshot<QuerySnapshot> snapShot) {
-    return snapShot.data!.docs
-        .map(
-          (doc) => ListTile(
-            title: Text(
-              doc["name"],
-            ),
-          ),
-        )
-        .toList();
   }
 }

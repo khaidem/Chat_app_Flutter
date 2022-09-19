@@ -120,14 +120,33 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+//** For Group_Chat Add */
+  Future<void> getGroup(String groupText) async {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('group_chat');
+
+    users.add(
+      {
+        'active': true,
+        'create_at': DateTime.now(),
+        'goup_name': groupText,
+        'uid_list': FieldValue.arrayUnion([_auth.currentUser!.uid])
+      },
+    ).then(
+        (DocumentReference docRef) => docRef.update({'group_id': docRef.id}));
+  }
+
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
+
   Future<void> getData() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await _collectionRef.get();
 
     // Get data from docs and convert map to List
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+    // allData.forEach((k, v) {});
 
     print(allData);
   }
