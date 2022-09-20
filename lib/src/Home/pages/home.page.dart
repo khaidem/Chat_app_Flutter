@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/widgets/list_user.widget.dart';
 import 'package:provider/provider.dart';
 
 import '../example.dart';
@@ -17,6 +18,12 @@ class _HomePageState extends State<HomePage> {
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('group_chat');
   final TextEditingController groupName = TextEditingController();
+
+  String dropdownValue = 'Item 1';
+  var items = [
+    'Item 1',
+    'Item 2',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +73,11 @@ class _HomePageState extends State<HomePage> {
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    height: 30,
+                    height: 40,
                     child: Center(
                       child: Text(
                         chatDoc[index]['goup_name'],
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -82,55 +90,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Center(
-                child: SizedBox(
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: TextFormField(
-                      controller: groupName,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Enter group Name",
-                        labelText: 'Enter group Name',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              // content: const Text('Username or password wrong'),
-              actions: [
-                Center(
-                  child: ElevatedButton(
-                    child: const Text('Submit'),
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-
-                      context
-                          .read<AuthProvider>()
-                          .addGroup(groupName.text.trim());
-
-                      Navigator.of(context).pop();
-                      groupName.clear();
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
+          Navigator.of(context).pushNamed(ListUserWidget.routeName);
         },
         child: const Icon(Icons.group_add),
       ),

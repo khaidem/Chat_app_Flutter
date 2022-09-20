@@ -12,13 +12,17 @@ class MessageTextWidget extends StatefulWidget {
 class _MessageTextWidgetState extends State<MessageTextWidget> {
   final TextEditingController _sendController = TextEditingController();
   var _enterMessage = '';
-  // final dateData = DateTime.now();
+  DocumentReference? doc;
+  final CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection('group_chat');
+
+  final auth = FirebaseAuth.instance.currentUser;
 
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
-    final auth = FirebaseAuth.instance.currentUser;
+
     FirebaseFirestore.instance
-        .collection('group_chat/RtTIgsLJIWfK88DOHRzG/messages')
+        .collection('group_chat/${doc?.id}/messages')
         .add({
       'message': _enterMessage,
       'send_at': Timestamp.now(),

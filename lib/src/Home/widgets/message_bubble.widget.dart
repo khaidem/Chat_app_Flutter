@@ -13,19 +13,20 @@ class MessageBubbleWidget extends StatelessWidget {
     return Row(
       children: [
         Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          width: 140,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
             ),
-            width: 140,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: Text(
-              message,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-            )),
+          ),
+        ),
       ],
     );
   }

@@ -143,11 +143,12 @@ class AuthProvider with ChangeNotifier {
         'uid_list': FieldValue.arrayUnion([])
       },
     ).then(
-        (DocumentReference docRef) => docRef.update({'group_id': docRef.id}));
+      (DocumentReference docRef) => docRef.update({'group_id': docRef.id}),
+    );
   }
 
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('user_accounts');
+      FirebaseFirestore.instance.collection('group_chat');
 
   Future<void> getData() async {
     // Get docs from collection reference
