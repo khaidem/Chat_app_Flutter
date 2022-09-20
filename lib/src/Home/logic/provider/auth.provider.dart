@@ -18,6 +18,8 @@ class AuthProvider with ChangeNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 //** For Google SigIn */
   Future googleSigIn() async {
     try {
@@ -113,6 +115,12 @@ class AuthProvider with ChangeNotifier {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: SigInWidget.verify, smsCode: code);
       await _auth.signInWithCredential(credential);
+      _firestore.collection('user_accounts').doc(_auth.currentUser!.uid).set({
+        'active': true,
+        'created_at': Timestamp.now(),
+        'phone_number': _auth.currentUser!.phoneNumber,
+        'uid': _auth.currentUser!.uid,
+      });
     } catch (e) {
       debugPrint(
         e.toString(),
@@ -121,7 +129,9 @@ class AuthProvider with ChangeNotifier {
   }
 
 //** For Group_Chat Add */
-  Future<void> getGroup(String groupText) async {
+  Future<void> addGroup(String groupText) async {
+    final collectionRef =
+        FirebaseFirestore.instance.collection('user_accounts').get();
     CollectionReference users =
         FirebaseFirestore.instance.collection('group_chat');
 
@@ -130,7 +140,7 @@ class AuthProvider with ChangeNotifier {
         'active': true,
         'create_at': DateTime.now(),
         'goup_name': groupText,
-        'uid_list': FieldValue.arrayUnion([_auth.currentUser!.uid])
+        'uid_list': FieldValue.arrayUnion([])
       },
     ).then(
         (DocumentReference docRef) => docRef.update({'group_id': docRef.id}));

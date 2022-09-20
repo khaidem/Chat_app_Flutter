@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../example.dart';
+
 class SendingMessageBodyWidget extends StatelessWidget {
   const SendingMessageBodyWidget({Key? key}) : super(key: key);
 
@@ -21,8 +23,8 @@ class SendingMessageBodyWidget extends StatelessWidget {
         return ListView.builder(
           itemCount: chatDocs.length,
           reverse: true,
-          itemBuilder: (ctx, index) => Text(
-            chatDocs[index]['message'],
+          itemBuilder: (ctx, index) => MessageBubbleWidget(
+            message: chatDocs[index]['message'],
           ),
         );
       },

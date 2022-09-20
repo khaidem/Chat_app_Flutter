@@ -18,17 +18,18 @@ class _HomePageState extends State<HomePage> {
       FirebaseFirestore.instance.collection('group_chat');
   final TextEditingController groupName = TextEditingController();
 
-  final _enterMessage = '';
-
-  void _sendSubmit() {
-    FocusScope.of(context).unfocus();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Group Chat'),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                context.read<AuthProvider>().signOut();
+              },
+              child: const Text('Logout'))
+        ],
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
@@ -54,15 +55,22 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (ctx) => const MessagePage(),
-                        // settings: RouteSettings(
-                        //   arguments: chatDoc[index],
-                        // ),
+                        settings: RouteSettings(
+                          arguments: chatDoc[index]['goup_name'],
+                        ),
                       ),
                     );
                   },
-                  child: ListTile(
-                    title: Text(
-                      chatDoc[index]['goup_name'],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        chatDoc[index]['goup_name'],
+                      ),
                     ),
                   ),
                 );
@@ -109,12 +117,11 @@ class _HomePageState extends State<HomePage> {
                   child: ElevatedButton(
                     child: const Text('Submit'),
                     onPressed: () {
-                      // context.read<AuthProvider>().getData();
                       FocusScope.of(context).unfocus();
 
                       context
                           .read<AuthProvider>()
-                          .getGroup(groupName.text.trim());
+                          .addGroup(groupName.text.trim());
 
                       Navigator.of(context).pop();
                       groupName.clear();

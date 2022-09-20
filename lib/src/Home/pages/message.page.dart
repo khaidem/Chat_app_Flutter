@@ -3,14 +3,18 @@ import 'package:goole_sigin_firebase/src/Home/widgets/message_text.widget.dart';
 import 'package:goole_sigin_firebase/src/Home/widgets/sending_message_body.widget.dart';
 
 class MessagePage extends StatefulWidget {
-  const MessagePage({Key? key}) : super(key: key);
+  const MessagePage({
+    Key? key,
+  }) : super(key: key);
   static const routeName = '/MessagePage';
+  // final String name;
 
   @override
   State<MessagePage> createState() => _SendingMessagesWidgetState();
 }
 
 class _SendingMessagesWidgetState extends State<MessagePage> {
+  // final name = ModalRoute.of(context)!.settings.name;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
