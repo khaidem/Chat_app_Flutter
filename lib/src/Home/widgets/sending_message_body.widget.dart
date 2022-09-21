@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import '../example.dart';
 
 class SendingMessageBodyWidget extends StatelessWidget {
-  const SendingMessageBodyWidget({Key? key}) : super(key: key);
+  const SendingMessageBodyWidget({Key? key, required this.groupId})
+      : super(key: key);
+  final String groupId;
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference collectionRef = FirebaseFirestore.instance
-        .collection('group_chat/RtTIgsLJIWfK88DOHRzG/messages');
+    final CollectionReference collectionRef =
+        FirebaseFirestore.instance.collection('group_chat/$groupId/messages');
     return FutureBuilder(
       future: Future.value(FirebaseAuth.instance.currentUser!.uid),
       builder: (ctx, AsyncSnapshot futureSnapshot) {

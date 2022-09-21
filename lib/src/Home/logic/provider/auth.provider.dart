@@ -33,15 +33,24 @@ class AuthProvider with ChangeNotifier {
       if (_user == null) {
         return;
       }
+      //** Obtain the auth details form the request */
       final googleAuth = await googleUser.authentication;
+      //** Create new credentail */
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+
       debugPrint(
         credential.toString(),
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
+      _firestore.collection('user_accounts').doc(_auth.currentUser!.uid).set({
+        'active': true,
+        'created_at': Timestamp.now(),
+        'email': _auth.currentUser!.email,
+        'uid': _auth.currentUser!.uid,
+      });
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
       rethrow;

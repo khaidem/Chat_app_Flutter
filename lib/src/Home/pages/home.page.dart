@@ -32,10 +32,11 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Group Chat'),
         actions: [
           ElevatedButton(
-              onPressed: () {
-                context.read<AuthProvider>().signOut();
-              },
-              child: const Text('Logout'))
+            onPressed: () {
+              context.read<AuthProvider>().signOut();
+            },
+            child: const Text('Logout'),
+          )
         ],
       ),
       body: StreamBuilder(
@@ -61,9 +62,11 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => const MessagePage(),
+                        builder: (ctx) => MessagePage(
+                          groupId: chatDoc[index]['group_id'],
+                        ),
                         settings: RouteSettings(
-                          arguments: chatDoc[index]['goup_name'],
+                          arguments: chatDoc[index],
                         ),
                       ),
                     );

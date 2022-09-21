@@ -44,14 +44,6 @@ class _SigInWidgetState extends State<SigInWidget> {
                 Text('Welcome Back'),
               ],
             ),
-            // const SizedBox(
-            //   height: 50,
-            //   child: Icon(
-            //     Icons.flutter_dash,
-            //     size: 50,
-            //     color: Colors.blue,
-            //   ),
-            // ),
             const SizedBox(
               height: 10,
             ),

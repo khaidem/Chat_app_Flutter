@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageTextWidget extends StatefulWidget {
-  const MessageTextWidget({Key? key}) : super(key: key);
+  const MessageTextWidget({Key? key, required this.groupId}) : super(key: key);
+  final String groupId;
 
   @override
   State<MessageTextWidget> createState() => _MessageTextWidgetState();
@@ -12,6 +13,7 @@ class MessageTextWidget extends StatefulWidget {
 class _MessageTextWidgetState extends State<MessageTextWidget> {
   final TextEditingController _sendController = TextEditingController();
   var _enterMessage = '';
+
   // DocumentReference? doc;
   // final CollectionReference collectionRef =
   //     FirebaseFirestore.instance.collection('group_chat');
@@ -23,7 +25,7 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
     final auth = FirebaseAuth.instance.currentUser;
 
     FirebaseFirestore.instance
-        .collection('group_chat/RtTIgsLJIWfK88DOHRzG/messages')
+        .collection('group_chat/$widget.groupId/messages')
         .add({
       'message': _enterMessage,
       'sent_at': Timestamp.now(),
