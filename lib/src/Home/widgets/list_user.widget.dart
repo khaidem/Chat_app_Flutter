@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
+import 'package:provider/provider.dart';
 
 class ListUserWidget extends StatefulWidget {
   const ListUserWidget({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class _ListUserWidgetState extends State<ListUserWidget> {
 
   final List _selectCategory = [];
 
-  DocumentReference? doc;
+//** For Selecting list of User id Form login */
   void _onCategorySelected(bool? selected, code) {
     if (selected == true) {
       setState(() {
@@ -34,25 +33,34 @@ class _ListUserWidgetState extends State<ListUserWidget> {
     }
   }
 
+//**  group submit creating */
+  void _submitGroup() {
+    FocusScope.of(context).unfocus();
+    context
+        .read<AuthProvider>()
+        .addGroup(groupName.text.trim(), _selectCategory);
+    // users.add(
+    //   {
+    //     'active': true,
+    //     'create_at': DateTime.now(),
+    //     'goup_name': groupName.text.trim(),
+    //     'uid_list': _selectCategory,
+    //   },
+    // ).then(
+    //   (DocumentReference docRef) => docRef.update(
+    //     {'group_id': docRef.id},
+    //   ),
+    // );
+    Navigator.of(context).popAndPushNamed(HomePage.routeName);
+
+    groupName.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User List'),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              // var data = _selectCategory;
-              // log(data.toString());
-              // context.read<AuthProvider>().getData();
-              // var uid = FirebaseAuth.instance.currentUser!.uid;
-              // log(uid.toString());
-              var data = doc!.id;
-              log(data.toString());
-            },
-            child: const Text('data'),
-          )
-        ],
+        title: const Text('User PhoneNumber'),
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
@@ -130,26 +138,8 @@ class _ListUserWidgetState extends State<ListUserWidget> {
               actions: [
                 Center(
                   child: ElevatedButton(
+                    onPressed: _submitGroup,
                     child: const Text('Submit'),
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-
-                      users.add(
-                        {
-                          'active': true,
-                          'create_at': DateTime.now(),
-                          'goup_name': groupName.text.trim(),
-                          'uid_list': _selectCategory,
-                        },
-                      ).then(
-                        (DocumentReference docRef) => docRef.update(
-                          {'group_id': docRef.id},
-                        ),
-                      );
-                      Navigator.of(context).popAndPushNamed(HomePage.routeName);
-
-                      groupName.clear();
-                    },
                   ),
                 ),
               ],
