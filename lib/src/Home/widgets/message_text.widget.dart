@@ -25,7 +25,7 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
     final auth = FirebaseAuth.instance.currentUser;
 
     FirebaseFirestore.instance
-        .collection('group_chat/$widget.groupId/messages')
+        .collection('group_chat/${widget.groupId}/messages')
         .add({
       'message': _enterMessage,
       'sent_at': Timestamp.now(),

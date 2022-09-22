@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
+                          groupName: chatDoc[index]['goup_name'],
                         ),
                         settings: RouteSettings(
                           arguments: chatDoc[index],
