@@ -22,6 +22,35 @@ class _MessagePageState extends State<MessagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.groupName),
+        actions: [
+          DropdownButton(
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            items: [
+              DropdownMenuItem(
+                value: 'Add New user',
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => AddMoreUserPage(
+                          groupId: widget.groupId,
+                          groupName: widget.groupName,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const SizedBox(
+                    child: Text("Add New User"),
+                  ),
+                ),
+              )
+            ],
+            onChanged: (value) {},
+          )
+        ],
       ),
       body: SizedBox(
         child: Column(

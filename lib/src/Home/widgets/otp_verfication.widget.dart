@@ -110,6 +110,14 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     () {
                       enableButton = true;
                       code = value;
+                      final otpSend = context.read<AuthProvider>();
+                      otpSend.otpVerification(code).then(
+                            (value) =>
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomePage.routeName,
+                              (route) => false,
+                            ),
+                          );
                     },
                   );
                 } else {
@@ -120,63 +128,63 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green.shade600,
-              ),
-              onPressed: enableButton
-                  ? () async {
-                      if (mounted) {
-                        setState(() {
-                          isLoading = true;
-                        });
-                      }
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     primary: Colors.green.shade600,
+            //   ),
+            //   onPressed: enableButton
+            //       ? () async {
+            //           if (mounted) {
+            //             setState(() {
+            //               isLoading = true;
+            //             });
+            //           }
 
-                      try {
-                        final otpSend = context.read<AuthProvider>();
-                        //  await FirebaseFirestore.instance
-                        //       .collection('user_accounts')
-                        //       .doc(_auth.currentUser!.uid)
-                        //       .set({
-                        //     'phone_number': phone,
-                        //   });
+            //           try {
+            //             final otpSend = context.read<AuthProvider>();
+            //             //  await FirebaseFirestore.instance
+            //             //       .collection('user_accounts')
+            //             //       .doc(_auth.currentUser!.uid)
+            //             //       .set({
+            //             //     'phone_number': phone,
+            //             //   });
 
-                        otpSend.otpVerification(code).then(
-                              (value) => Navigator.of(context)
-                                  .pushNamedAndRemoveUntil(
-                                      HomePage.routeName, (route) => false),
-                            );
+            //             otpSend.otpVerification(code).then(
+            //                   (value) => Navigator.of(context)
+            //                       .pushNamedAndRemoveUntil(
+            //                           HomePage.routeName, (route) => false),
+            //                 );
 
-                        await Future.delayed(
-                          const Duration(seconds: 3),
-                        );
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(
-                        //     content: Text('Success'),
-                        //     duration: Duration(milliseconds: 300),
-                        //   ),
-                        // );
-                      } catch (error) {
-                        print(error.toString());
-                      }
-                      if (mounted) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    }
-                  : null,
-              child: isLoading
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 1.5,
-                      ),
-                    )
-                  : const Text("Verify OTP"),
-            ),
+            //             await Future.delayed(
+            //               const Duration(seconds: 3),
+            //             );
+            //             // ScaffoldMessenger.of(context).showSnackBar(
+            //             //   const SnackBar(
+            //             //     content: Text('Success'),
+            //             //     duration: Duration(milliseconds: 300),
+            //             //   ),
+            //             // );
+            //           } catch (error) {
+            //             print(error.toString());
+            //           }
+            //           if (mounted) {
+            //             setState(() {
+            //               isLoading = false;
+            //             });
+            //           }
+            //         }
+            //       : null,
+            //   child: isLoading
+            //       ? const SizedBox(
+            //           width: 16,
+            //           height: 16,
+            //           child: CircularProgressIndicator(
+            //             color: Colors.white,
+            //             strokeWidth: 1.5,
+            //           ),
+            //         )
+            //       : const Text("Verify OTP"),
+            // ),
           ],
         ),
       ),

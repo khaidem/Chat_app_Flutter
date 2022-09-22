@@ -5,9 +5,13 @@ class MessageBubbleWidget extends StatelessWidget {
     Key? key,
     required this.message,
     required this.isMe,
+    // required this.keys,
+    // required this.userName,
   }) : super(key: key);
   final String message;
   final bool isMe;
+  // final Key keys;
+  // final String userName;
 
   @override
   Widget build(BuildContext context) {
