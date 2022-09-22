@@ -157,13 +157,15 @@ class AuthProvider with ChangeNotifier {
   }
 
   //** New User added to group */
-  Future<void> newUserAdd(String groupName, List<dynamic> slectedUser) async {
-    // final collectionRef =
-    //     FirebaseFirestore.instance.collection('user_accounts').get();
+  Future<void> newUserAdd(String groupName, BuildContext context,
+      List<dynamic> selectedUser) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('group_chat');
 
-    users.doc('');
+    users.doc(groupName).update(
+      {'uid_list': selectedUser},
+    );
+    Navigator.of(context).pop();
   }
 
 //** For Print all Current User */

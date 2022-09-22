@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/example.dart';
+import 'package:provider/provider.dart';
 
 class AddMoreUserPage extends StatefulWidget {
   const AddMoreUserPage(
@@ -91,13 +93,10 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final CollectionReference newUserAdd =
-              FirebaseFirestore.instance.collection('group_chat');
-          await newUserAdd
-              .doc(widget.groupId)
-              .update({'uid_list': _selectCategory});
-          Navigator.of(context).pop();
+        onPressed: () {
+          context
+              .read<AuthProvider>()
+              .newUserAdd(widget.groupId, context, _selectCategory);
         },
         child: _selectCategory.isEmpty
             ? const Icon(Icons.add)
