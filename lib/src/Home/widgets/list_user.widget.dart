@@ -39,6 +39,8 @@ class _ListUserWidgetState extends State<ListUserWidget> {
     context
         .read<AuthProvider>()
         .addGroup(groupName.text.trim(), _selectCategory);
+    Navigator.of(context).popUntil((route) => route.isFirst);
+
     // users.add(
     //   {
     //     'active': true,
@@ -51,7 +53,6 @@ class _ListUserWidgetState extends State<ListUserWidget> {
     //     {'group_id': docRef.id},
     //   ),
     // );
-    Navigator.of(context).popAndPushNamed(HomePage.routeName);
 
     groupName.clear();
   }
@@ -65,17 +66,16 @@ class _ListUserWidgetState extends State<ListUserWidget> {
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
-          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final userName = asyncSnapshot.data!.docs;
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.separated(
-                itemBuilder: (ctx, index) {
-                  return InkWell(
-                    onTap: () {},
-                    child: CheckboxListTile(
+          // if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          //   return const Center(child: CircularProgressIndicator());
+          // }
+          if (asyncSnapshot.hasData) {
+            final userName = asyncSnapshot.data!.docs;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.separated(
+                  itemBuilder: (ctx, index) {
+                    return CheckboxListTile(
                       tristate: true,
                       secondary: const Icon(Icons.person),
                       title: Text(userName[index]['uid']),
@@ -90,16 +90,19 @@ class _ListUserWidgetState extends State<ListUserWidget> {
                           _onCategorySelected(value, userName[index]['uid']);
                         });
                       },
-                    ),
-                  );
-                },
-                separatorBuilder: ((context, index) {
-                  return const Divider(
-                    thickness: 3,
-                  );
-                }),
-                itemCount: userName.length),
-          );
+                    );
+                  },
+                  separatorBuilder: ((context, index) {
+                    return const Divider(
+                      thickness: 3,
+                    );
+                  }),
+                  itemCount: userName.length),
+            );
+          } else if (asyncSnapshot.hasError) {
+            return const Text(' Error');
+          }
+          return const Text('error');
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

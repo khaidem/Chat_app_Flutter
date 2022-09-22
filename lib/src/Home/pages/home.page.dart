@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             onPressed: () {
               context.read<AuthProvider>().signOut();
+              Navigator.of(context).pushReplacementNamed('/');
             },
             child: const Text('Logout'),
           )
