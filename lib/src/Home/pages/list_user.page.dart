@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/data/model/user_model.model.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class _ListUserPageState extends State<ListUserPage> {
   final List _selectCategory = [];
 
   final _auth = FirebaseFirestore.instance;
-
+  List<UserModel> userModel = [];
 //** For Selecting list of User id Form login */
   void _onCategorySelected(bool? selected, code) {
     if (selected == true) {
@@ -62,40 +63,58 @@ class _ListUserPageState extends State<ListUserPage> {
     groupName.clear();
   }
 
+  Future<void> getData() async {
+    var queryDocumentSnapshot =
+        await FirebaseFirestore.instance.collection('user_accounts').get();
+    var allData = queryDocumentSnapshot.docs.map((e) => e.data()).toList();
+    setState(() {
+      userModel = allData.cast<UserModel>();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User List'),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              context.read<AuthProvider>().getData();
+            },
+            child: const Text('data'),
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
-            final userName = asyncSnapshot.data!.docs;
+            final ids = asyncSnapshot.data!.docs;
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
                 itemBuilder: (ctx, index) {
                   // String phone = userName[index]['phone_number'];
                   // String email = userName[index]['email'];
-                  String email = userName[index]['email'];
+                  String phoneNumber = ids[index]['email'];
 
                   return CheckboxListTile(
                     tristate: true,
                     secondary: const Icon(Icons.person),
-                    title: Text(email),
+                    title: Text(phoneNumber),
                     controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.red,
                     checkColor: Colors.white,
                     value: _selectCategory.contains(
-                      userName[index]['uid'],
+                      ids[index]['uid'],
                     ),
                     onChanged: (value) {
                       setState(() {
                         _onCategorySelected(
                           value,
-                          userName[index]['uid'],
+                          ids[index]['uid'],
                         );
                       });
                     },
@@ -106,7 +125,7 @@ class _ListUserPageState extends State<ListUserPage> {
                     thickness: 3,
                   );
                 }),
-                itemCount: userName.length,
+                itemCount: ids.length,
               ),
             );
           } else if (asyncSnapshot.hasError) {

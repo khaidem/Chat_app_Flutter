@@ -173,15 +173,10 @@ class AuthProvider with ChangeNotifier {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
 
-  Future<void> getData() async {
-    // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
-
-    // Get data from docs and convert map to List
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-
-    // allData.forEach((k, v) {});
-
-    print(allData);
+  getData() {
+    _collectionRef.snapshots().listen((event) {
+      event.docs.toList();
+      log('$event');
+    });
   }
 }
