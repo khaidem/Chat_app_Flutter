@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/data/model/user_model.model.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
 import 'package:provider/provider.dart';
 
@@ -98,12 +97,14 @@ class _ListUserPageState extends State<ListUserPage> {
                 itemBuilder: (ctx, index) {
                   // String phone = userName[index]['phone_number'];
                   // String email = userName[index]['email'];
-                  String phoneNumber = ids[index]['email'];
+                  // String phoneNumber = ids[index]['email'];
 
                   return CheckboxListTile(
                     tristate: true,
                     secondary: const Icon(Icons.person),
-                    title: Text(phoneNumber),
+                    title: Text(ids[index]['email'].isEmpty
+                        ? ids[index]['phone_number']
+                        : ids[index]['email']),
                     controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.red,
                     checkColor: Colors.white,

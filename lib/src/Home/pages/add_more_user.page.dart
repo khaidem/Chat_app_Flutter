@@ -49,41 +49,40 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
-            final userName = asyncSnapshot.data!.docs;
+            final ids = asyncSnapshot.data!.docs;
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
-                  itemBuilder: (ctx, index) {
-                    // String phone = userName[index]['phone_number'];
-                    // String email = userName[index]['email'];
-                    String uid = userName[index]['uid'];
-
-                    return CheckboxListTile(
-                      tristate: true,
-                      secondary: const Icon(Icons.person),
-                      title: Text(uid),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      activeColor: Colors.red,
-                      checkColor: Colors.white,
-                      value: _selectCategory.contains(
-                        userName[index]['uid'],
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _onCategorySelected(
-                            value,
-                            userName[index]['uid'],
-                          );
-                        });
-                      },
-                    );
-                  },
-                  separatorBuilder: ((context, index) {
-                    return const Divider(
-                      thickness: 3,
-                    );
-                  }),
-                  itemCount: userName.length),
+                itemBuilder: (ctx, index) {
+                  return CheckboxListTile(
+                    tristate: true,
+                    secondary: const Icon(Icons.person),
+                    title: Text(ids[index]['email'].isEmpty
+                        ? ids[index]['phone_number']
+                        : ids[index]['email']),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: Colors.red,
+                    checkColor: Colors.white,
+                    value: _selectCategory.contains(
+                      ids[index]['uid'],
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _onCategorySelected(
+                          value,
+                          ids[index]['uid'],
+                        );
+                      });
+                    },
+                  );
+                },
+                separatorBuilder: ((context, index) {
+                  return const Divider(
+                    thickness: 3,
+                  );
+                }),
+                itemCount: ids.length,
+              ),
             );
           } else if (asyncSnapshot.hasError) {
             return const Text(' Error');

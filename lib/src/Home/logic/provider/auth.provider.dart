@@ -49,6 +49,7 @@ class AuthProvider with ChangeNotifier {
         'active': true,
         'created_at': Timestamp.now(),
         'email': _auth.currentUser!.email,
+        'phone_number': '',
         'uid': _auth.currentUser!.uid,
       });
     } on FirebaseException catch (error) {
@@ -129,6 +130,7 @@ class AuthProvider with ChangeNotifier {
         'created_at': Timestamp.now(),
         'phone_number': _auth.currentUser!.phoneNumber,
         'uid': _auth.currentUser!.uid,
+        'email': ''
       });
     } catch (e) {
       debugPrint(
