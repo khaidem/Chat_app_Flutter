@@ -163,8 +163,9 @@ class AuthProvider with ChangeNotifier {
         FirebaseFirestore.instance.collection('group_chat');
 
     users.doc(groupName).update(
-      {'uid_list': selectedUser},
+      {'uid_list': FieldValue.arrayUnion(selectedUser)},
     );
+
     Navigator.of(context).pop();
   }
 

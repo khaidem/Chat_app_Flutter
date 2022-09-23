@@ -18,6 +18,8 @@ class _ListUserPageState extends State<ListUserPage> {
 
   final List _selectCategory = [];
 
+  final _auth = FirebaseFirestore.instance;
+
 //** For Selecting list of User id Form login */
   void _onCategorySelected(bool? selected, code) {
     if (selected == true) {
@@ -74,37 +76,38 @@ class _ListUserPageState extends State<ListUserPage> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
-                  itemBuilder: (ctx, index) {
-                    // String phone = userName[index]['phone_number'];
-                    // String email = userName[index]['email'];
-                    String uid = userName[index]['uid'];
+                itemBuilder: (ctx, index) {
+                  // String phone = userName[index]['phone_number'];
+                  // String email = userName[index]['email'];
+                  String email = userName[index]['email'];
 
-                    return CheckboxListTile(
-                      tristate: true,
-                      secondary: const Icon(Icons.person),
-                      title: Text(uid),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      activeColor: Colors.red,
-                      checkColor: Colors.white,
-                      value: _selectCategory.contains(
-                        userName[index]['uid'],
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _onCategorySelected(
-                            value,
-                            userName[index]['uid'],
-                          );
-                        });
-                      },
-                    );
-                  },
-                  separatorBuilder: ((context, index) {
-                    return const Divider(
-                      thickness: 3,
-                    );
-                  }),
-                  itemCount: userName.length),
+                  return CheckboxListTile(
+                    tristate: true,
+                    secondary: const Icon(Icons.person),
+                    title: Text(email),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    activeColor: Colors.red,
+                    checkColor: Colors.white,
+                    value: _selectCategory.contains(
+                      userName[index]['uid'],
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _onCategorySelected(
+                          value,
+                          userName[index]['uid'],
+                        );
+                      });
+                    },
+                  );
+                },
+                separatorBuilder: ((context, index) {
+                  return const Divider(
+                    thickness: 3,
+                  );
+                }),
+                itemCount: userName.length,
+              ),
             );
           } else if (asyncSnapshot.hasError) {
             return const Text(' Error');

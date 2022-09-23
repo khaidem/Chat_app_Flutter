@@ -4,9 +4,11 @@ import 'package:goole_sigin_firebase/src/Home/example.dart';
 import 'package:provider/provider.dart';
 
 class AddMoreUserPage extends StatefulWidget {
-  const AddMoreUserPage(
-      {Key? key, required this.groupId, required this.groupName})
-      : super(key: key);
+  const AddMoreUserPage({
+    Key? key,
+    required this.groupId,
+    required this.groupName,
+  }) : super(key: key);
   static const routeName = '/AddMoreUserPage';
   final String groupId;
   final String groupName;
@@ -41,7 +43,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add new User'),
+        title: Text(widget.groupName),
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
