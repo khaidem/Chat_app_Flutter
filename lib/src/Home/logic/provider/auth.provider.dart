@@ -140,7 +140,7 @@ class AuthProvider with ChangeNotifier {
   }
 
 //** For Group_Chat Add */
-  Future<void> addGroup(String groupText, List<dynamic> slectedUser) async {
+  Future<void> addGroup(String groupText, List<dynamic> selectedUser) async {
     // final collectionRef =
     //     FirebaseFirestore.instance.collection('user_accounts').get();
     CollectionReference users =
@@ -150,8 +150,8 @@ class AuthProvider with ChangeNotifier {
       {
         'active': true,
         'create_at': Timestamp.now(),
-        'goup_name': groupText,
-        'uid_list': slectedUser
+        'group_name': groupText,
+        'uid_list': selectedUser
       },
     ).then(
       (DocumentReference docRef) => docRef.update({'group_id': docRef.id}),
@@ -173,12 +173,18 @@ class AuthProvider with ChangeNotifier {
 
 //** For Print all Current User */
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('user_accounts');
+      FirebaseFirestore.instance.collection('group_chat');
 
-  getData() {
-    _collectionRef.snapshots().listen((event) {
-      event.docs.toList();
-      log('$event');
-    });
+  getData(String groupId) async {
+    var data = FirebaseFirestore.instance.collection('group_chat');
+    var docSna = await data.doc(groupId).get();
+
+    if (docSna.exists) {
+      List<dynamic> dataNew = docSna.get('uid_list');
+      dataNew.map((e) {
+        return e;
+      }).toList();
+      log('$dataNew');
+    }
   }
 }

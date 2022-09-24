@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/Home/example.dart';
+
 import 'package:provider/provider.dart';
+
+import '../example.dart';
 
 class ListUserPage extends StatefulWidget {
   const ListUserPage({Key? key}) : super(key: key);
@@ -76,14 +78,6 @@ class _ListUserPageState extends State<ListUserPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User List'),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              context.read<AuthProvider>().getData();
-            },
-            child: const Text('data'),
-          ),
-        ],
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
@@ -97,7 +91,6 @@ class _ListUserPageState extends State<ListUserPage> {
                 itemBuilder: (ctx, index) {
                   // String phone = userName[index]['phone_number'];
                   // String email = userName[index]['email'];
-                  // String phoneNumber = ids[index]['email'];
 
                   return CheckboxListTile(
                     tristate: true,

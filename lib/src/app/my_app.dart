@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
           PhoneNumberVerificationWidget.routeName: (ctx) =>
               const PhoneNumberVerificationWidget(),
           ListUserPage.routeName: (context) => const ListUserPage(),
-          // AddMoreUser.routeName: (context) => const AddMoreUser(),
         },
       ),
     );

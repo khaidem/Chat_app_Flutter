@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/pages/group_user_list.page.dart';
 
 import '../example.dart';
 
@@ -21,7 +22,15 @@ class _MessagePageState extends State<MessagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.groupName),
+        title: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (ctx) => GroupUserList(groupId: widget.groupId)),
+            );
+          },
+          child: Text(widget.groupName),
+        ),
         actions: [
           DropdownButton(
             icon: const Icon(

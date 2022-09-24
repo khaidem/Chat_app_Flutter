@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../example.dart';
-import 'message.page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,14 +29,37 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Group Chat'),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              context.read<AuthProvider>().signOut();
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-            child: const Text('Logout'),
+          DropdownButton(
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            items: [
+              DropdownMenuItem(
+                value: 'Add New user',
+                child: InkWell(
+                  onTap: () {
+                    context.read<AuthProvider>().signOut();
+                    Navigator.of(context).pushReplacementNamed('/');
+                  },
+                  child: const SizedBox(
+                    child: Text("Logout"),
+                  ),
+                ),
+              )
+            ],
+            onChanged: (value) {},
           )
         ],
+        // actions: [
+        //   ElevatedButton(
+        //     onPressed: () {
+        //       context.read<AuthProvider>().signOut();
+        //       Navigator.of(context).pushReplacementNamed('/');
+        //     },
+        //     child: const Text('Logout'),
+        //   )
+        // ],
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
@@ -64,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
-                          groupName: chatDoc[index]['goup_name'],
+                          groupName: chatDoc[index]['group_name'],
                         ),
                         settings: RouteSettings(
                           arguments: chatDoc[index],
@@ -72,19 +94,23 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    height: 40,
-                    child: Center(
-                      child: Text(
-                        chatDoc[index]['goup_name'],
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
+                  child: ListTile(
+                    title: Text(chatDoc[index]['group_name']),
+                    trailing: const Icon(Icons.arrow_forward),
                   ),
+                  // child: Container(
+                  //   decoration: BoxDecoration(
+                  //     color: Theme.of(context).colorScheme.secondary,
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   height: 40,
+                  //   child: Center(
+                  //     child: Text(
+                  //       chatDoc[index]['goup_name'],
+                  //       style: const TextStyle(color: Colors.white),
+                  //     ),
+                  //   ),
+                  // ),
                 );
               },
             ),
