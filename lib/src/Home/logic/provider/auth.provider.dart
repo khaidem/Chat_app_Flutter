@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -172,8 +173,8 @@ class AuthProvider with ChangeNotifier {
   }
 
 //** For Print all Current User */
-  // final CollectionReference _collectionRef =
-  //     FirebaseFirestore.instance.collection('group_chat');
+  final CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('group_chat');
 
   getData(String groupId) async {
     var data = FirebaseFirestore.instance.collection('group_chat');
@@ -186,5 +187,23 @@ class AuthProvider with ChangeNotifier {
       }).toList();
       log('$dataNew');
     }
+  }
+
+  PlatformFile? pickFile;
+
+  //** File Picker form Storage */
+  Future selectedFile(BuildContext context) async {
+    var snackBar = SnackBar(
+      content: const Text('Yay! A SnackBar!'),
+      action: SnackBarAction(label: 'send', onPressed: () {}),
+    );
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+    if (result.isSinglePick) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    pickFile = result.files.first;
+    log('Path: ${pickFile!.path}');
+    notifyListeners();
   }
 }

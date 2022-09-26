@@ -17,12 +17,6 @@ class _HomePageState extends State<HomePage> {
       FirebaseFirestore.instance.collection('group_chat');
   final TextEditingController groupName = TextEditingController();
 
-  String dropdownValue = 'Item 1';
-  var items = [
-    'Item 1',
-    'Item 2',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

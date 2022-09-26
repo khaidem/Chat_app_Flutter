@@ -43,9 +43,14 @@ dependencies:
   pinput: ^2.2.12
   flutter_easyloading: ^3.0.5
   cloud_firestore: ^3.4.8
-  bloc: ^8.1.0
-  flutter_bloc: ^8.1.1
-  equatable: ^2.0.5
+ 
+ 
+  path_provider: ^2.0.11
+  firebase_storage: ^10.3.9
+  image_picker: ^0.8.5+3
+  permission_handler: ^10.0.1
+  file_picker: ^5.2.0
+  fluttertoast: ^8.0.9
  
 
 dev_dependencies:
