@@ -172,8 +172,8 @@ class AuthProvider with ChangeNotifier {
   }
 
 //** For Print all Current User */
-  final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('group_chat');
+  // final CollectionReference _collectionRef =
+  //     FirebaseFirestore.instance.collection('group_chat');
 
   getData(String groupId) async {
     var data = FirebaseFirestore.instance.collection('group_chat');

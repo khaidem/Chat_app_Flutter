@@ -6,12 +6,12 @@ class MessageBubbleWidget extends StatelessWidget {
     required this.message,
     required this.isMe,
     // required this.keys,
-    // required this.userName,
+    // required this.userId,
   }) : super(key: key);
   final String message;
   final bool isMe;
   // final Key keys;
-  // final String userName;
+  // final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +29,40 @@ class MessageBubbleWidget extends StatelessWidget {
               bottomLeft:
                   !isMe ? const Radius.circular(0) : const Radius.circular(12),
               bottomRight:
-                  !isMe ? const Radius.circular(0) : const Radius.circular(12),
+                  isMe ? const Radius.circular(0) : const Radius.circular(12),
             ),
           ),
           width: 140,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Text(
-            message,
-            style: TextStyle(
-              color: isMe ? Colors.black : Colors.white,
-            ),
+          child: Column(
+            children: [
+              // FutureBuilder(
+              //     future: FirebaseFirestore.instance
+              //         .collection('user_accounts')
+              //         .doc(userId)
+              //         .get(),
+              //     builder: (context, AsyncSnapshot snapshot) {
+              //       if (snapshot.connectionState == ConnectionState.waiting) {
+              //         return const Text('Loading..');
+              //       }
+              //       Map<String, dynamic> data =
+              //           snapshot.data!.data() as Map<String, dynamic>;
+
+              //       return Text(
+              //         data['email'].isEmpty
+              //             ? data['phone_number']
+              //             : data['email'],
+              //         style: const TextStyle(fontWeight: FontWeight.bold),
+              //       );
+              //     }),
+              Text(
+                message,
+                style: TextStyle(
+                  color: isMe ? Colors.black : Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
       ],

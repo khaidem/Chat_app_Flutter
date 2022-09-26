@@ -26,7 +26,11 @@ class _MessagePageState extends State<MessagePage> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (ctx) => GroupUserList(groupId: widget.groupId)),
+                builder: (ctx) => GroupUserList(
+                  groupId: widget.groupId,
+                  uidList: const [],
+                ),
+              ),
             );
           },
           child: Text(widget.groupName),

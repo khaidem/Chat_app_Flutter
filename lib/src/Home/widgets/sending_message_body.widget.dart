@@ -48,7 +48,7 @@ class SendingMessageBodyWidget extends StatelessWidget {
                 // keys: ValueKey(
                 //   chatDocs[index].docs,
                 // ),
-                // userName: chatDocs[index]['uid'],
+                // userId: chatDocs[index]['uid_list'],
               ),
             );
           },

@@ -57,9 +57,11 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
                   return CheckboxListTile(
                     tristate: true,
                     secondary: const Icon(Icons.person),
-                    title: Text(ids[index]['email'].isEmpty
-                        ? ids[index]['phone_number']
-                        : ids[index]['email']),
+                    title: Text(
+                      ids[index]['email'].isEmpty
+                          ? ids[index]['phone_number']
+                          : ids[index]['email'],
+                    ),
                     controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.red,
                     checkColor: Colors.white,
