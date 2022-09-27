@@ -51,6 +51,7 @@ dependencies:
   permission_handler: ^10.0.1
   file_picker: ^5.2.0
   fluttertoast: ^8.0.9
+  syncfusion_flutter_pdfviewer: ^20.2.50-beta
  
 
 dev_dependencies:

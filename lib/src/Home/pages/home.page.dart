@@ -57,13 +57,13 @@ class _HomePageState extends State<HomePage> {
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
-        builder: (ctx, AsyncSnapshot shapShot) {
-          if (shapShot.connectionState == ConnectionState.waiting) {
+        builder: (ctx, AsyncSnapshot snapShot) {
+          if (snapShot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          final chatDoc = shapShot.data!.docs;
+          final chatDoc = snapShot.data!.docs;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.separated(
@@ -81,8 +81,6 @@ class _HomePageState extends State<HomePage> {
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
                           groupName: chatDoc[index]['group_name'],
-                          uidList: chatDoc[index]['uid_list'],
-                          // key: chatDoc[index].FieldPath.documentId,
                         ),
                         settings: RouteSettings(
                           arguments: chatDoc[index],
@@ -93,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title: Text(chatDoc[index]['group_name']),
                     trailing: const Icon(Icons.arrow_forward),
+                    // leading: Text(chatDoc[index]['uid_list'][0]),
                   ),
                   // child: Container(
                   //   decoration: BoxDecoration(

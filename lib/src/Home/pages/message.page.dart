@@ -8,12 +8,10 @@ class MessagePage extends StatefulWidget {
     Key? key,
     required this.groupId,
     required this.groupName,
-    required this.uidList,
   }) : super(key: key);
   static const routeName = '/MessagePage';
   final String groupId;
   final String groupName;
-  final List<dynamic> uidList;
 
   @override
   State<MessagePage> createState() => _MessagePageState();
@@ -30,7 +28,6 @@ class _MessagePageState extends State<MessagePage> {
               MaterialPageRoute(
                 builder: (ctx) => GroupUserList(
                   groupId: widget.groupId,
-                  uidList: widget.uidList,
                 ),
               ),
             );

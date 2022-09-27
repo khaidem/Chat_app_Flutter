@@ -19,8 +19,9 @@ class MessageTextWidget extends StatefulWidget {
 class _MessageTextWidgetState extends State<MessageTextWidget> {
   final TextEditingController _sendController = TextEditingController();
   var _enterMessage = '';
-
+  File? imageFile;
   PlatformFile? pickFile;
+  UploadTask? uploadTask;
 
 //** For sending message to Group  */
 
@@ -40,19 +41,41 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
     _sendController.clear();
   }
 
+  // Future getImage() async {
+  //   ImagePicker picker = ImagePicker();
+  //   await picker.pickImage(source: ImageSource.gallery).then((value) {
+  //     if (value != null) {
+  //       imageFile = File(value.path);
+  //       uploadFile();
+  //     }
+  //   });
+  // }
+
   //** File Picker form PhoneStorage save to FireStorage*/
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+  Future uploadFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpeg', 'jpg', 'pdf', 'png'],
+    );
     if (result == null) return;
 
     pickFile = result.files.first;
     final file = File(pickFile!.path as String);
-    final firebaseStorageRef = FirebaseStorage.instance.ref().child('files');
+    final path = 'files/${pickFile!.name}';
 
-    UploadTask uploadTask = firebaseStorageRef.putFile(file);
-    log('uploadTask $uploadTask');
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    final firebaseStorageRef = FirebaseStorage.instance.ref().child(path);
+    setState(() {
+      uploadTask = firebaseStorageRef.putFile(file);
+    });
+
+    // UploadTask uploadTask =
+    // log('uploadTask $uploadTask');
+    TaskSnapshot taskSnapshot = await uploadTask!.whenComplete(() => null);
+
     final fileURL = await taskSnapshot.ref.getDownloadURL();
+    setState(() {
+      uploadTask = null;
+    });
     log('Form FireStorage $fileURL');
     final auth = FirebaseAuth.instance.currentUser!.uid;
     FirebaseFirestore.instance
@@ -62,6 +85,7 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
         'file_send': fileURL,
         'sent_by': auth,
         'message': '',
+        'type': 'text',
         'sent_at': Timestamp.now(),
       },
     );
@@ -83,7 +107,11 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
                 labelText: 'Send a Message',
                 suffixIcon: IconButton(
                   onPressed: () {
-                    selectFile();
+                    uploadFile();
+                    const snackBar = SnackBar(
+                      content: Text('upoload File}'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   icon: const Icon(Icons.add),
                 ),

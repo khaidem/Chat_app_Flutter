@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../example.dart';
 
@@ -11,16 +8,6 @@ class SendingMessageBodyWidget extends StatelessWidget {
   const SendingMessageBodyWidget({Key? key, required this.groupId})
       : super(key: key);
   final String groupId;
-
-  Future getImage() async {
-    File? file;
-    ImagePicker picker = ImagePicker();
-    await picker.pickImage(source: ImageSource.gallery).then((value) {
-      if (value != null) {
-        file = File(value.path);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +21,6 @@ class SendingMessageBodyWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-
         return StreamBuilder(
           //** We use sent_at to order the text in dateTimeNow as that text in
           //* Screen order in descending */
@@ -58,10 +44,7 @@ class SendingMessageBodyWidget extends StatelessWidget {
                 ///*we can compare the id of current user with the id message  */
                 //** We dont need uid to compare String and bool in these */
                 isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
-                // keys: ValueKey(
-                //   chatDocs[index].docs,
-                // ),
-                // userId: chatDocs[index]['uid_list'],
+                file_send: chatDocs[index]['file_send'],
               ),
             );
           },
