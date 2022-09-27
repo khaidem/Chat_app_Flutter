@@ -17,15 +17,7 @@ class GroupUserList extends StatefulWidget {
 }
 
 class _GroupUserListState extends State<GroupUserList> {
-  final _fireStore = FirebaseFirestore.instance;
-  Future<void> getUidList() async {
-    QuerySnapshot querySnapshot =
-        await _fireStore.collection('group_chat').get();
-    final allData =
-        querySnapshot.docs.map((doc) => doc.get('uid_list')).toList();
-    log(allData.toString());
-  }
-
+  var dersler = [];
   //** For extracting data form group_chat of uid_list */
   getdata() async {
     await FirebaseFirestore.instance
@@ -34,7 +26,8 @@ class _GroupUserListState extends State<GroupUserList> {
         .get()
         .then((value) {
       var uidList = value.data()!["uid_list"];
-      log('$uidList');
+
+      log('$dersler');
     });
   }
 
@@ -46,14 +39,17 @@ class _GroupUserListState extends State<GroupUserList> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              getUidList();
+              // getdata();
             },
             child: const Text('data'),
           ),
         ],
       ),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('user_accounts').get(),
+        future: FirebaseFirestore.instance
+            .collection('user_accounts')
+            .where('group_chat', isEqualTo: widget.groupId)
+            .get(),
         builder: (_, AsyncSnapshot snapShot) {
           if (snapShot.hasError) {
             return Text('Error = ${snapShot.error}');
