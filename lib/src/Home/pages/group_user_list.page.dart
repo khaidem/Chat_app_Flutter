@@ -1,17 +1,26 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
-import '../example.dart';
 
 class GroupUserList extends StatelessWidget {
   const GroupUserList({Key? key, required this.groupId, required this.uidList})
       : super(key: key);
   final String groupId;
-  final List<String> uidList;
+  final List<dynamic> uidList;
 
   static const routeName = '/GroupUserList';
+  //** For extracting data form group_chat of uid_list */
+  getdata() async {
+    await FirebaseFirestore.instance
+        .collection('group_chat')
+        .doc(groupId)
+        .get()
+        .then((value) {
+      var uidList = value.data()!["uid_list"];
+      print(uidList);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,24 +32,21 @@ class GroupUserList extends StatelessWidget {
         actions: [
           ElevatedButton(
             onPressed: () {
-              context.read<AuthProvider>().getData(groupId);
+              getdata();
             },
             child: const Text('data'),
           ),
         ],
       ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        future: collectionRef
-            .where(
-              groupId,
-            )
-            .get(),
-        builder: (_, snapShot) {
+      body: StreamBuilder(
+        stream: collectionRef.snapshots(),
+        builder: (_, AsyncSnapshot snapShot) {
           if (snapShot.hasError) {
             return Text('Error = ${snapShot.error}');
           }
           if (snapShot.hasData) {
-            var outPut = snapShot.data!.docs;
+            var outPut = snapShot.data.docs;
+            log(outPut.toString());
             // var outPut = snapShot.data!.data();
             // var value = outPut!['uid_list'];
             return ListView.builder(

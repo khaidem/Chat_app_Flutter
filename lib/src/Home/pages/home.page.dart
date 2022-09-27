@@ -81,6 +81,8 @@ class _HomePageState extends State<HomePage> {
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
                           groupName: chatDoc[index]['group_name'],
+                          uidList: chatDoc[index]['uid_list'],
+                          // key: chatDoc[index].FieldPath.documentId,
                         ),
                         settings: RouteSettings(
                           arguments: chatDoc[index],
