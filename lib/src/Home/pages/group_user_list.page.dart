@@ -21,20 +21,26 @@ class GroupUserList extends StatelessWidget {
       appBar: AppBar(
         title: const Text(' Group user'),
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection('user_accounts')
+            //**compare that ID to the contents of a List using a .where()  */
             .where('uid', whereIn: uidList)
-            .get(),
+            .snapshots(),
         builder: (_, AsyncSnapshot snapShot) {
           if (snapShot.hasError) {
             return Text('Error = ${snapShot.error}');
           }
           if (snapShot.hasData) {
             var outPut = snapShot.data.docs;
-            log('Show user data $outPut');
+            log('Show group user data $outPut');
 
-            return ListView.builder(
+            return ListView.separated(
+                separatorBuilder: ((context, index) {
+                  return const Divider(
+                    thickness: 3,
+                  );
+                }),
                 itemCount: outPut.length,
                 itemBuilder: (ctx, index) {
                   return ListTile(

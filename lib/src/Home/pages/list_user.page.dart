@@ -67,7 +67,7 @@ class _ListUserPageState extends State<ListUserPage> {
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
             final ids = asyncSnapshot.data.docs;
-            log('$ids');
+            log('Show List of user form logIn $ids');
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
