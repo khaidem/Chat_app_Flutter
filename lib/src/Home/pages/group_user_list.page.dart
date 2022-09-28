@@ -40,11 +40,13 @@ class GroupUserList extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection('user_accounts')
-            .doc(uid)
-            .get(),
+            .where('uid', arrayContainsAny: [
+          'A4H4lFV0JTYLx3LBd8jwDW85CGa2',
+          'POKNmyQEzPXwYhYUrOSyRbMD6TL2'
+        ]).snapshots(),
         builder: (_, AsyncSnapshot snapShot) {
           if (snapShot.hasError) {
             return Text('Error = ${snapShot.error}');
@@ -56,7 +58,7 @@ class GroupUserList extends StatelessWidget {
                 child: Column(
               children: [
                 Text(
-                  outPut['email'],
+                  outPut.toString(),
                 ),
               ],
             ));
