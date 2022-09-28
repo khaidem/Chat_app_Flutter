@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +24,9 @@ class _ListUserPageState extends State<ListUserPage> {
 
   final _auth = FirebaseFirestore.instance;
   List<UserModel> userModel = [];
+
 //** For Selecting list of User id Form login */
+// =================================================
   void _onCategorySelected(bool? selected, code) {
     if (selected == true) {
       setState(
@@ -39,7 +43,8 @@ class _ListUserPageState extends State<ListUserPage> {
     }
   }
 
-//**  group submit creating */
+//**  Group submit creating */
+// ===========================
   void _submitGroup() {
     FocusScope.of(context).unfocus();
     context.read<AuthProvider>().addGroup(
@@ -48,29 +53,7 @@ class _ListUserPageState extends State<ListUserPage> {
         );
     Navigator.of(context).popUntil((route) => route.isFirst);
 
-    // users.add(
-    //   {
-    //     'active': true,
-    //     'create_at': DateTime.now(),
-    //     'goup_name': groupName.text.trim(),
-    //     'uid_list': _selectCategory,
-    //   },
-    // ).then(
-    //   (DocumentReference docRef) => docRef.update(
-    //     {'group_id': docRef.id},
-    //   ),
-    // );
-
     groupName.clear();
-  }
-
-  Future<void> getData() async {
-    var queryDocumentSnapshot =
-        await FirebaseFirestore.instance.collection('user_accounts').get();
-    var allData = queryDocumentSnapshot.docs.map((e) => e.data()).toList();
-    setState(() {
-      userModel = allData.cast<UserModel>();
-    });
   }
 
   @override
@@ -83,15 +66,13 @@ class _ListUserPageState extends State<ListUserPage> {
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
-            final ids = asyncSnapshot.data!.docs;
+            final ids = asyncSnapshot.data.docs;
+            log('$ids');
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
                 itemBuilder: (ctx, index) {
-                  // String phone = userName[index]['phone_number'];
-                  // String email = userName[index]['email'];
-
                   return CheckboxListTile(
                     tristate: true,
                     secondary: const Icon(Icons.person),
@@ -162,7 +143,6 @@ class _ListUserPageState extends State<ListUserPage> {
                   ),
                 ),
               ),
-              // content: const Text('Username or password wrong'),
               actions: [
                 Center(
                   child: ElevatedButton(

@@ -75,8 +75,6 @@ class _HomePageState extends State<HomePage> {
               }),
               itemCount: chatDoc.length,
               itemBuilder: (ctx, index) {
-                List data =
-                    List.castFrom(snapShot.data.docs[index]['uid_list']);
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -84,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
                           groupName: chatDoc[index]['group_name'],
-                          uid: chatDoc[index]['uid'],
                           uidList: chatDoc[index]['uid_list'],
                         ),
                         settings: RouteSettings(
@@ -96,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title: Text(chatDoc[index]['group_name']),
                     trailing: const Icon(Icons.arrow_forward),
+                    // leading: Text(chatDoc[index]['uid']),
                   ),
                   // child: Container(
                   //   decoration: BoxDecoration(

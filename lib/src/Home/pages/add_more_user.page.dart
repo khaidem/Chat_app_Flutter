@@ -23,6 +23,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
   final List _selectCategory = [];
 
   //** For Selecting list of User id Form login */
+  // ==============================================
   void _onCategorySelected(bool? selected, code) {
     if (selected == true) {
       setState(
@@ -49,7 +50,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
-            final ids = asyncSnapshot.data!.docs;
+            final ids = asyncSnapshot.data.docs;
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(

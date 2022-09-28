@@ -41,16 +41,6 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
     _sendController.clear();
   }
 
-  // Future getImage() async {
-  //   ImagePicker picker = ImagePicker();
-  //   await picker.pickImage(source: ImageSource.gallery).then((value) {
-  //     if (value != null) {
-  //       imageFile = File(value.path);
-  //       uploadFile();
-  //     }
-  //   });
-  // }
-
   //** File Picker form PhoneStorage save to FireStorage*/
   Future uploadFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -65,7 +55,8 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
 
     final firebaseStorageRef = FirebaseStorage.instance.ref().child(path);
     setState(() {
-      uploadTask = firebaseStorageRef.putFile(file);
+      uploadTask = firebaseStorageRef.putFile(
+          file, SettableMetadata(contentType: 'pdf'));
     });
 
     // UploadTask uploadTask =

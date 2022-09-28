@@ -16,6 +16,7 @@ class AuthProvider with ChangeNotifier {
   String? name;
   String? email;
   String? password;
+  PlatformFile? pickFile;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -189,9 +190,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  PlatformFile? pickFile;
-
   //** File Picker form Storage */
+  // ================================
   Future selectedFile(BuildContext context) async {
     var snackBar = SnackBar(
       content: const Text('Yay! A SnackBar!'),
@@ -205,5 +205,15 @@ class AuthProvider with ChangeNotifier {
     pickFile = result.files.first;
     log('Path: ${pickFile!.path}');
     notifyListeners();
+  }
+
+//** FOR COLLECTION DATA OF DOCUMENT**//
+// ========================================
+  final CollectionReference _collection =
+      FirebaseFirestore.instance.collection('group_chat');
+  Future getUserAccount() async {
+    QuerySnapshot querySnapshot = await _collection.get();
+    final allData = querySnapshot.docs.map((e) => e.data()).toList();
+    log('user Account Data$allData');
   }
 }
