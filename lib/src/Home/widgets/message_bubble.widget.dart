@@ -6,12 +6,12 @@ class MessageBubbleWidget extends StatelessWidget {
     required this.message,
     required this.isMe,
     required this.file_send,
-    required this.uidList,
+    // required this.uidList,
   }) : super(key: key);
   final String message;
   final bool isMe;
   final String file_send;
-  final List uidList;
+  // final List<dynamic> uidList;
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +42,28 @@ class MessageBubbleWidget extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Column(
                   children: [
-                    // FutureBuilder(
-                    //     future: FirebaseFirestore.instance
-                    //         .collection('user_accounts')
-                    //         .doc(userId)
-                    //         .get(),
-                    //     builder: (context, AsyncSnapshot snapshot) {
-                    //       if (snapshot.connectionState == ConnectionState.waiting) {
-                    //         return const Text('Loading..');
-                    //       }
-                    //       Map<String, dynamic> data =
-                    //           snapshot.data!.data() as Map<String, dynamic>;
+                    // StreamBuilder(
+                    //   stream: FirebaseFirestore.instance
+                    //       .collection('user_accounts')
+                    //       //**compare that ID to the contents of a List using a .where()  */
+                    //       .where('uid', whereIn: uidList)
+                    //       .snapshots(),
+                    //   builder: (context, AsyncSnapshot snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return const Text('Loading..');
+                    //     }
+                    //     Map<String, dynamic> data =
+                    //         snapshot.data!.data() as Map<String, dynamic>;
 
-                    //       return Text(
-                    //         data['email'].isEmpty
-                    //             ? data['phone_number']
-                    //             : data['email'],
-                    //         style: const TextStyle(fontWeight: FontWeight.bold),
-                    //       );
-                    //     }),
+                    //     return Text(
+                    //       data['email'].isEmpty
+                    //           ? data['phone_number']
+                    //           : data['email'],
+                    //       style: const TextStyle(fontWeight: FontWeight.bold),
+                    //     );
+                    //   },
+                    // ),
                     Text(
                       message,
                       style: TextStyle(

@@ -45,7 +45,8 @@ class SendingMessageBodyWidget extends StatelessWidget {
                 //** We dont need uid to compare String and bool in these */
                 isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
                 key: ValueKey(chatDocs[index]),
-                file_send: chatDocs[index]['file_send'], uidList: const [],
+                file_send: chatDocs[index]['file_send'],
+                // uidList: chatDocs[index]['uid_list'],
               ),
             );
           },

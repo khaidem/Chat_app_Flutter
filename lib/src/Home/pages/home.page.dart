@@ -28,21 +28,24 @@ class _HomePageState extends State<HomePage> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            items: [
+            items: const [
               DropdownMenuItem(
                 value: 'Add New user',
-                child: InkWell(
-                  onTap: () {
-                    context.read<AuthProvider>().signOut();
-                    Navigator.of(context).pushReplacementNamed('/');
-                  },
-                  child: const SizedBox(
-                    child: Text("Logout"),
-                  ),
+                // child: InkWell(
+                //   onTap: () {
+                //     context.read<AuthProvider>().signOut();
+                //     Navigator.of(context).pushReplacementNamed('/');
+                //   },
+                child: SizedBox(
+                  child: Text("Logout"),
                 ),
-              )
+              ),
             ],
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value == 'Add New user') {
+                context.read<AuthProvider>().signOut();
+              }
+            },
           )
         ],
         // actions: [

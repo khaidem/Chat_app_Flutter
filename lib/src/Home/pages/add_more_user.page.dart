@@ -8,10 +8,12 @@ class AddMoreUserPage extends StatefulWidget {
     Key? key,
     required this.groupId,
     required this.groupName,
+    required this.uidList,
   }) : super(key: key);
   static const routeName = '/AddMoreUserPage';
   final String groupId;
   final String groupName;
+  final List<dynamic> uidList;
 
   @override
   State<AddMoreUserPage> createState() => _AddMoreUserPageState();
@@ -21,6 +23,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
   final List _selectCategory = [];
+  bool isChecked = false;
 
   //** For Selecting list of User id Form login */
   // ==============================================
@@ -47,7 +50,8 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
         title: Text(widget.groupName),
       ),
       body: StreamBuilder(
-        stream: collectionRef.snapshots(),
+        stream:
+            collectionRef.where('uid', isEqualTo: widget.uidList).snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
             final ids = asyncSnapshot.data.docs;

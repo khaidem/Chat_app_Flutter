@@ -44,27 +44,27 @@ class _MessagePageState extends State<MessagePage> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            items: [
+            items: const [
               DropdownMenuItem(
                 value: 'Add New user',
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => AddMoreUserPage(
-                          groupId: widget.groupId,
-                          groupName: widget.groupName,
-                        ),
-                      ),
-                    );
-                  },
-                  child: const SizedBox(
-                    child: Text("Add New User"),
-                  ),
+                child: SizedBox(
+                  child: Text("Add New User"),
                 ),
-              )
+              ),
             ],
-            onChanged: (value) {},
+            onChanged: (value) {
+              if (value != 'Add New User') {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => AddMoreUserPage(
+                      groupId: widget.groupId,
+                      groupName: widget.groupName,
+                      uidList: widget.uidList,
+                    ),
+                  ),
+                );
+              }
+            },
           )
         ],
       ),
