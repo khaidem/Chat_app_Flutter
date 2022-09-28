@@ -6,10 +6,12 @@ class MessageBubbleWidget extends StatelessWidget {
     required this.message,
     required this.isMe,
     required this.file_send,
+    required this.uidList,
   }) : super(key: key);
   final String message;
   final bool isMe;
   final String file_send;
+  final List uidList;
 
   @override
   Widget build(BuildContext context) {

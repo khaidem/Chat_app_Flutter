@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
           final chatDoc = snapShot.data!.docs;
+          // print(chatDoc);
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.separated(
@@ -74,6 +75,8 @@ class _HomePageState extends State<HomePage> {
               }),
               itemCount: chatDoc.length,
               itemBuilder: (ctx, index) {
+                List data =
+                    List.castFrom(snapShot.data.docs[index]['uid_list']);
                 return InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -81,6 +84,8 @@ class _HomePageState extends State<HomePage> {
                         builder: (ctx) => MessagePage(
                           groupId: chatDoc[index]['group_id'],
                           groupName: chatDoc[index]['group_name'],
+                          uid: chatDoc[index]['uid'],
+                          uidList: chatDoc[index]['uid_list'],
                         ),
                         settings: RouteSettings(
                           arguments: chatDoc[index],
@@ -91,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title: Text(chatDoc[index]['group_name']),
                     trailing: const Icon(Icons.arrow_forward),
-                    // leading: Text(chatDoc[index]['uid_list'][0]),
                   ),
                   // child: Container(
                   //   decoration: BoxDecoration(
