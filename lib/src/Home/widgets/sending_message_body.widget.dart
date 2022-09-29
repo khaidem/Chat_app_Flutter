@@ -41,14 +41,16 @@ class SendingMessageBodyWidget extends StatelessWidget {
               itemCount: chatDocs.length,
               reverse: true,
               itemBuilder: (ctx, index) => MessageBubbleWidget(
-                  message: chatDocs[index]['message'],
+                message: chatDocs[index]['message'],
 
-                  ///*we can compare the id of current user with the id message  */
-                  //** We dont need uid to compare String and bool in these */
-                  isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
-                  key: ValueKey(chatDocs[index]),
-                  file_send: chatDocs[index]['file_send'],
-                  uidList: uidList),
+                ///*we can compare the id of current user with the id message  */
+                //** We dont need uid to compare String and bool in these */
+                isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
+                key: ValueKey(chatDocs[index]),
+                file_send: chatDocs[index]['file_send'],
+                sendBy: chatDocs[index]['sent_by'],
+                uidList: uidList,
+              ),
             );
           },
         );

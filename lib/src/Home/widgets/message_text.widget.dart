@@ -42,21 +42,25 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
   }
 
   //** File Picker form PhoneStorage save to FireStorage*/
+  // ======================================================
   Future uploadFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpeg', 'jpg', 'pdf', 'png'],
+      allowedExtensions: ['jpeg', 'jpg', 'png'],
     );
     if (result == null) return;
 
-    pickFile = result.files.first;
+    pickFile = result.files.single;
     final file = File(pickFile!.path as String);
+    // var pick = file.readAsBytes();
     final path = 'files/${pickFile!.name}';
 
     final firebaseStorageRef = FirebaseStorage.instance.ref().child(path);
     setState(() {
       uploadTask = firebaseStorageRef.putFile(
-          file, SettableMetadata(contentType: 'pdf'));
+        file,
+        SettableMetadata(contentType: 'pdf'),
+      );
     });
 
     // UploadTask uploadTask =
@@ -68,15 +72,18 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
       uploadTask = null;
     });
     log('Form FireStorage $fileURL');
+
+    //** Upload Url to cloud firebase */
+    // ====================================
     final auth = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('group_chat/${widget.groupId}/messages')
         .add(
       {
         'file_send': fileURL,
         'sent_by': auth,
         'message': '',
-        'type': 'text',
+        // 'type': 'text',
         'sent_at': Timestamp.now(),
       },
     );
@@ -99,10 +106,10 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
                 suffixIcon: IconButton(
                   onPressed: () {
                     uploadFile();
-                    const snackBar = SnackBar(
-                      content: Text('upoload File}'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    // const snackBar = SnackBar(
+                    //   content: Text('upoload File}'),
+                    // );
+                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   icon: const Icon(Icons.add),
                 ),

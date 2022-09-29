@@ -23,24 +23,27 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Group Chat'),
         actions: [
-          DropdownButton(
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Add New user',
-                child: SizedBox(
-                  child: Text("Logout"),
-                ),
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.white,
               ),
-            ],
-            onChanged: (value) {
-              if (value == 'Add New user') {
-                context.read<AuthProvider>().signOut();
-              }
-            },
+              items: const [
+                DropdownMenuItem(
+                  value: 'Add New user',
+                  child: SizedBox(
+                    child: Text("Logout"),
+                  ),
+                ),
+              ],
+              onChanged: (value) {
+                if (value == 'Add New user') {
+                  context.read<AuthProvider>().signOut();
+                  Navigator.of(context).pushReplacementNamed('/');
+                }
+              },
+            ),
           )
         ],
       ),

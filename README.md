@@ -17,10 +17,18 @@ samples, guidance on mobile development, and a full API reference.
 
 
 //* For Firebase join collection to collection
-[
+
 ====================================================
 
+    First off, how can I get each document in the share list's ID?
 
+For this, you're required to actually query the entire collection. You can iterate the results to collect the IDs of each document. There is no easy way to just get a list of IDs directly from web and mobile client code. See: How to get a list of document IDs in a collection Cloud Firestore?
+
+    And secondly, is it possible to compare that ID to the contents of a List using a .where() clause?
+
+If you have a list of document ID strings in memory that could be any length, you will need to perform a query filtering projects for "projOwner" for each individual ID. There are no SQL-like joins in Firestore, so you can't simply join the two collections together with a single query.
+
+Here's how you do a single one - you have to call out the name of the field to filter on:
 
 firestore
     .collection("projects")

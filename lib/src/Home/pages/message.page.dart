@@ -39,49 +39,49 @@ class _MessagePageState extends State<MessagePage> {
           child: Text(widget.groupName),
         ),
         actions: [
-          DropdownButton(
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            items: const [
-              DropdownMenuItem(
-                value: 'Add New user',
-                child: SizedBox(
-                  child: Text("Add New User"),
-                ),
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.white,
               ),
-            ],
-            onChanged: (value) {
-              if (value != 'Add New User') {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => AddMoreUserPage(
-                      groupId: widget.groupId,
-                      groupName: widget.groupName,
-                      uidList: widget.uidList,
-                    ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Add New user',
+                  child: SizedBox(
+                    child: Text("Add New User"),
                   ),
-                );
-              }
-            },
+                ),
+              ],
+              onChanged: (value) {
+                if (value != 'Add New User') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (ctx) => AddMoreUserPage(
+                        groupId: widget.groupId,
+                        groupName: widget.groupName,
+                        uidList: widget.uidList,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           )
         ],
       ),
-      body: SizedBox(
-        child: Column(
-          children: [
-            Expanded(
-              child: SendingMessageBodyWidget(
-                groupId: widget.groupId,
-                uidList: widget.uidList,
-              ),
-            ),
-            MessageTextWidget(
+      body: Column(
+        children: [
+          Flexible(
+            child: SendingMessageBodyWidget(
               groupId: widget.groupId,
-            )
-          ],
-        ),
+              uidList: widget.uidList,
+            ),
+          ),
+          MessageTextWidget(
+            groupId: widget.groupId,
+          )
+        ],
       ),
     );
   }

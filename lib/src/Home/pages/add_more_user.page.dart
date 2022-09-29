@@ -72,6 +72,9 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
                           ? ids[index]['phone_number']
                           : ids[index]['email'],
                       style: TextStyle(
+                          decoration: widget.uidList.contains(ids[index]['uid'])
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
                           color: widget.uidList.contains(ids[index]['uid'])
                               ? Colors.grey
                               : Colors.black),
