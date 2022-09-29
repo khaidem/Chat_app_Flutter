@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/data/repo/firebase_api.repo.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,9 @@ class AddMoreUserPage extends StatefulWidget {
 }
 
 class _AddMoreUserPageState extends State<AddMoreUserPage> {
+  ///**FireStore data Store */
+  final curd = Curd();
+
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
   final List _selectCategory = [];
@@ -47,11 +51,12 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.groupName),
+        title: const Text(' Add User '),
       ),
       body: StreamBuilder(
-        stream:
-            collectionRef.where('uid', isEqualTo: widget.uidList).snapshots(),
+        stream: collectionRef
+            // .where('uid', isNotEqualTo: widget.uidList)
+            .snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
             final ids = asyncSnapshot.data.docs;
@@ -66,6 +71,10 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
                       ids[index]['email'].isEmpty
                           ? ids[index]['phone_number']
                           : ids[index]['email'],
+                      style: TextStyle(
+                          color: widget.uidList.contains(ids[index]['uid'])
+                              ? Colors.grey
+                              : Colors.black),
                     ),
                     controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.red,
@@ -74,12 +83,20 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
                       ids[index]['uid'],
                     ),
                     onChanged: (value) {
-                      setState(() {
-                        _onCategorySelected(
-                          value,
-                          ids[index]['uid'],
-                        );
-                      });
+                      widget.uidList.contains(ids[index]['uid'])
+                          ? showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return const AlertDialog(
+                                  content: Text('Already in the group'),
+                                );
+                              })
+                          : setState(() {
+                              _onCategorySelected(
+                                value,
+                                ids[index]['uid'],
+                              );
+                            });
                     },
                   );
                 },

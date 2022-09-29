@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import '../example.dart';
 
 class SendingMessageBodyWidget extends StatelessWidget {
-  const SendingMessageBodyWidget({Key? key, required this.groupId})
+  const SendingMessageBodyWidget(
+      {Key? key, required this.groupId, required this.uidList})
       : super(key: key);
   final String groupId;
+  final List<dynamic> uidList;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +41,14 @@ class SendingMessageBodyWidget extends StatelessWidget {
               itemCount: chatDocs.length,
               reverse: true,
               itemBuilder: (ctx, index) => MessageBubbleWidget(
-                message: chatDocs[index]['message'],
+                  message: chatDocs[index]['message'],
 
-                ///*we can compare the id of current user with the id message  */
-                //** We dont need uid to compare String and bool in these */
-                isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
-                key: ValueKey(chatDocs[index]),
-                file_send: chatDocs[index]['file_send'],
-                // uidList: chatDocs[index]['uid_list'],
-              ),
+                  ///*we can compare the id of current user with the id message  */
+                  //** We dont need uid to compare String and bool in these */
+                  isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
+                  key: ValueKey(chatDocs[index]),
+                  file_send: chatDocs[index]['file_send'],
+                  uidList: uidList),
             );
           },
         );

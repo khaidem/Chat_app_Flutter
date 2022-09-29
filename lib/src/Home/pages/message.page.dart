@@ -74,6 +74,7 @@ class _MessagePageState extends State<MessagePage> {
             Expanded(
               child: SendingMessageBodyWidget(
                 groupId: widget.groupId,
+                uidList: widget.uidList,
               ),
             ),
             MessageTextWidget(

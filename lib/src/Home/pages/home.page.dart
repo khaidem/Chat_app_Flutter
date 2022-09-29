@@ -31,11 +31,6 @@ class _HomePageState extends State<HomePage> {
             items: const [
               DropdownMenuItem(
                 value: 'Add New user',
-                // child: InkWell(
-                //   onTap: () {
-                //     context.read<AuthProvider>().signOut();
-                //     Navigator.of(context).pushReplacementNamed('/');
-                //   },
                 child: SizedBox(
                   child: Text("Logout"),
                 ),
@@ -48,15 +43,6 @@ class _HomePageState extends State<HomePage> {
             },
           )
         ],
-        // actions: [
-        //   ElevatedButton(
-        //     onPressed: () {
-        //       context.read<AuthProvider>().signOut();
-        //       Navigator.of(context).pushReplacementNamed('/');
-        //     },
-        //     child: const Text('Logout'),
-        //   )
-        // ],
       ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
