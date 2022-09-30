@@ -54,9 +54,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
         title: const Text(' Add User '),
       ),
       body: StreamBuilder(
-        stream: collectionRef
-            // .where('uid', isNotEqualTo: widget.uidList)
-            .snapshots(),
+        stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
           if (asyncSnapshot.hasData) {
             final ids = asyncSnapshot.data.docs;

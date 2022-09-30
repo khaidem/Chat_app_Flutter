@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('group_chat');
   final TextEditingController groupName = TextEditingController();
+
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +53,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: StreamBuilder(
-        stream: collectionRef.snapshots(),
+        stream: collectionRef.where('uid_list',
+            arrayContainsAny: [_auth.currentUser!.uid]).snapshots(),
         builder: (ctx, AsyncSnapshot snapShot) {
+          log('${_auth.currentUser!.email}');
+          log('${_auth.currentUser!.phoneNumber}');
+
           if (snapShot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

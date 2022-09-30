@@ -23,7 +23,6 @@ class _ListUserPageState extends State<ListUserPage> {
   final List _selectCategory = [];
 
   final _auth = FirebaseFirestore.instance;
-  List<UserModel> userModel = [];
 
 //** For Selecting list of User id Form login */
 // =================================================

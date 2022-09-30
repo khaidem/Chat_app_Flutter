@@ -15,22 +15,6 @@ class FilePickerProvider with ChangeNotifier {
   //** To Store Data in FireStorage */
   //
   UploadTask? uploadTask;
-  //** File Picker form Storage */
-  // ================================
-  Future selectedFile(BuildContext context) async {
-    var snackBar = SnackBar(
-      content: const Text('Yay! A SnackBar!'),
-      action: SnackBarAction(label: 'send', onPressed: () {}),
-    );
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-    if (result.isSinglePick) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    pickFile = result.files.first;
-    log('Path: ${pickFile!.path}');
-    notifyListeners();
-  }
 
   //** File Pick form PhoneStorage save to FireStorage also Upload*/
   // ======================================================

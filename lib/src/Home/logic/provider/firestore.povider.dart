@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FireStoreProvider with ChangeNotifier {
+  final CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection('group_chat');
   //**** For Group_Chat Add ***************/
   // ==========================
   Future<void> addGroup(String groupText, List<dynamic> selectedUser) async {

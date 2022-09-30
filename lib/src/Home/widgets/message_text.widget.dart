@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +13,6 @@ class MessageTextWidget extends StatefulWidget {
 class _MessageTextWidgetState extends State<MessageTextWidget> {
   final TextEditingController _sendController = TextEditingController();
   var _enterMessage = '';
-  File? imageFile;
-  PlatformFile? pickFile;
-  UploadTask? uploadTask;
 
 //*** Sending text Msg */
 // ======================
