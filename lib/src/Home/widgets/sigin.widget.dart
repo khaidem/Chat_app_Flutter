@@ -31,102 +31,105 @@ class _SigInWidgetState extends State<SigInWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipOval(
-                  child: SizedBox.fromSize(
-                    size: const Size.fromRadius(50),
-                    child: Image.asset(
-                        'assets/images/Blue and Yellow Online Message Bubble Chat Logo(1).png'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Flexible(
+      body: Container(
+        color: const Color.fromARGB(255, 32, 48, 61),
+        child: Column(
+          children: [
+            Flexible(
               child: Column(
-            children: [
-              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    'Welcome! How would you like to Connect?',
-                    style: TextStyle(color: Colors.white),
+                children: [
+                  ClipOval(
+                    child: SizedBox.fromSize(
+                      size: const Size.fromRadius(50),
+                      child: Image.asset(
+                          'assets/images/Blue and Yellow Online Message Bubble Chat Logo(1).png'),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              // ElevatedButton.icon(
-              //   onPressed: () {
-              //     Navigator.of(context)
-              //         .pushNamed(PhoneNumberVerificationWidget.routeName);
-              //   },
-              //   icon: const Icon(FontAwesomeIcons.phoneFlip),
-              //   label: const Text('Continue with Phone Number'),
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //         margin: const EdgeInsets.only(left: 75.0, right: 20.0),
-              //         child: const Divider(
-              //           thickness: 2,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //     const Text(
-              //       "OR",
-              //     ),
-              //     Expanded(
-              //       child: Container(
-              //         margin: const EdgeInsets.only(left: 20.0, right: 75.0),
-              //         child: const Divider(
-              //           thickness: 2,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              FlutterSocialButton(
-                onTap: () {},
-                buttonType: ButtonType.phone,
-              ),
-              FlutterSocialButton(
-                onTap: () {},
-                buttonType: ButtonType.google,
-              ),
-              // FlutterSocialButton(
-              //   onTap: () {},
-              // ),
+            ),
+            Flexible(
+                child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Welcome! How would you like to Connect?',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                // ElevatedButton.icon(
+                //   onPressed: () {
+                //     Navigator.of(context)
+                //         .pushNamed(PhoneNumberVerificationWidget.routeName);
+                //   },
+                //   icon: const Icon(FontAwesomeIcons.phoneFlip),
+                //   label: const Text('Continue with Phone Number'),
+                // ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Container(
+                //         margin: const EdgeInsets.only(left: 75.0, right: 20.0),
+                //         child: const Divider(
+                //           thickness: 2,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //     ),
+                //     const Text(
+                //       "OR",
+                //     ),
+                //     Expanded(
+                //       child: Container(
+                //         margin: const EdgeInsets.only(left: 20.0, right: 75.0),
+                //         child: const Divider(
+                //           thickness: 2,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                FlutterSocialButton(
+                  onTap: () {},
+                  buttonType: ButtonType.phone,
+                ),
+                FlutterSocialButton(
+                  onTap: () {},
+                  buttonType: ButtonType.google,
+                ),
+                // FlutterSocialButton(
+                //   onTap: () {},
+                // ),
 
-              // GoogleAuthButton(
-              //   onPressed: () {
-              //     // googleSigIn();
-              //   },
-              //   style: const AuthButtonStyle(
-              //       buttonType: AuthButtonType.secondary,
-              //       iconType: AuthIconType.outlined),
-              //   text: 'CONTINUE WITH GOOGLE',
-              // )
-              // OutlinedButton.icon(
-              //   onPressed: () {
-              //     googleSigIn();
-              //   },
-              //   icon: const Icon(FontAwesomeIcons.google),
-              //   label: const Text('Continue with Google SigIn'),
-              // )
-            ],
-          ))
-        ],
+                // GoogleAuthButton(
+                //   onPressed: () {
+                //     // googleSigIn();
+                //   },
+                //   style: const AuthButtonStyle(
+                //       buttonType: AuthButtonType.secondary,
+                //       iconType: AuthIconType.outlined),
+                //   text: 'CONTINUE WITH GOOGLE',
+                // )
+                // OutlinedButton.icon(
+                //   onPressed: () {
+                //     googleSigIn();
+                //   },
+                //   icon: const Icon(FontAwesomeIcons.google),
+                //   label: const Text('Continue with Google SigIn'),
+                // )
+              ],
+            ))
+          ],
+        ),
       ),
     );
   }
