@@ -81,11 +81,12 @@ class MessageBubbleWidget extends StatelessWidget {
         : Container(
             height: 200,
             decoration: BoxDecoration(
-                // border: Border.all(width: 5),
-                image: DecorationImage(
-                    alignment:
-                        isMe ? Alignment.centerRight : Alignment.bottomLeft,
-                    image: NetworkImage(file_send))),
+              // border: Border.all(width: 5),
+              image: DecorationImage(
+                alignment: isMe ? Alignment.centerRight : Alignment.bottomLeft,
+                image: NetworkImage(file_send),
+              ),
+            ),
             alignment: isMe ? Alignment.centerRight : Alignment.bottomLeft,
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -29,8 +29,9 @@ class GroupUserList extends StatelessWidget {
             .snapshots(),
         builder: (_, AsyncSnapshot snapShot) {
           if (snapShot.hasError) {
-            return Text('Error = ${snapShot.error}');
+            return const Text('Error');
           }
+
           if (snapShot.hasData) {
             var outPut = snapShot.data.docs;
             log('Show group user data $outPut');

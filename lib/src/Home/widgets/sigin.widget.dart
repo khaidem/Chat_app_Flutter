@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,10 +17,8 @@ class _SigInWidgetState extends State<SigInWidget> {
   String verificationIdReceived = '';
   bool isSignedIn = false;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-//*** For GoogleSigIn Function */
-
+//*** After GoogleSigIn and Route  */
+// ===============================
   void googleSigIn() async {
     final provider = context.read<AuthProvider>();
 

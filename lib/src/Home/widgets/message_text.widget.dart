@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/Home/example.dart';
+import 'package:provider/provider.dart';
 
 class MessageTextWidget extends StatefulWidget {
   const MessageTextWidget({Key? key, required this.groupId}) : super(key: key);
@@ -23,72 +21,15 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
   PlatformFile? pickFile;
   UploadTask? uploadTask;
 
-//** For sending message to Group  */
-
+//*** Sending text Msg */
+// ======================
   void _sendMessage() {
-    FocusScope.of(context).unfocus();
-    final auth = FirebaseAuth.instance.currentUser;
-
-    FirebaseFirestore.instance
-        .collection('group_chat/${widget.groupId}/messages')
-        .add({
-      'message': _enterMessage,
-      'sent_at': Timestamp.now(),
-      'file_send': '',
-      //** This user id is form currenly LogIn User */
-      'sent_by': auth!.uid,
-    });
+    context.read<FireStoreProvider>().sendMessage(
+          context,
+          widget.groupId,
+          _enterMessage,
+        );
     _sendController.clear();
-  }
-
-  //** File Picker form PhoneStorage save to FireStorage*/
-  // ======================================================
-  Future uploadFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpeg', 'jpg', 'png'],
-    );
-    if (result == null) return;
-
-    pickFile = result.files.single;
-    final file = File(pickFile!.path as String);
-    // var pick = file.readAsBytes();
-    final path = 'files/${pickFile!.name}';
-
-    final firebaseStorageRef = FirebaseStorage.instance.ref().child(path);
-    setState(() {
-      uploadTask = firebaseStorageRef.putFile(
-        file,
-        SettableMetadata(contentType: 'pdf'),
-      );
-    });
-
-    // UploadTask uploadTask =
-    // log('uploadTask $uploadTask');
-    TaskSnapshot taskSnapshot = await uploadTask!.whenComplete(() => null);
-
-    final fileURL = await taskSnapshot.ref.getDownloadURL();
-    setState(() {
-      uploadTask = null;
-    });
-    log('Form FireStorage $fileURL');
-
-    //** Upload Url to cloud firebase */
-    // ====================================
-    final auth = FirebaseAuth.instance.currentUser!.uid;
-    await FirebaseFirestore.instance
-        .collection('group_chat/${widget.groupId}/messages')
-        .add(
-      {
-        'file_send': fileURL,
-        'sent_by': auth,
-        'message': '',
-        // 'type': 'text',
-        'sent_at': Timestamp.now(),
-      },
-    );
-    log('Path: ${pickFile!.path}');
-    log('user: $auth');
   }
 
   @override
@@ -105,11 +46,9 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
                 labelText: 'Send a Message',
                 suffixIcon: IconButton(
                   onPressed: () {
-                    uploadFile();
-                    // const snackBar = SnackBar(
-                    //   content: Text('upoload File}'),
-                    // );
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    context
+                        .read<FilePickerProvider>()
+                        .uploadFile(widget.groupId);
                   },
                   icon: const Icon(Icons.add),
                 ),

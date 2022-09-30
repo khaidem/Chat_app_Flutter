@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,7 +15,6 @@ class AuthProvider with ChangeNotifier {
   String? name;
   String? email;
   String? password;
-  PlatformFile? pickFile;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -139,81 +137,5 @@ class AuthProvider with ChangeNotifier {
         e.toString(),
       );
     }
-  }
-
-//** For Group_Chat Add */
-  Future<void> addGroup(String groupText, List<dynamic> selectedUser) async {
-    // final collectionRef =
-    //     FirebaseFirestore.instance.collection('user_accounts').get();
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('group_chat');
-
-    users.add(
-      {
-        'active': true,
-        'create_at': Timestamp.now(),
-        'group_name': groupText,
-        'uid_list': selectedUser
-      },
-    ).then(
-      (DocumentReference docRef) => docRef.update({'group_id': docRef.id}),
-    );
-  }
-
-  //** New User added to group */
-  Future<void> newUserAdd(String groupName, BuildContext context,
-      List<dynamic> selectedUser) async {
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('group_chat');
-
-    users.doc(groupName).update(
-      {'uid_list': FieldValue.arrayUnion(selectedUser)},
-    );
-
-    Navigator.of(context).pop();
-  }
-
-//** For Print all Current User */
-  final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('group_chat');
-
-  getData(String groupId) async {
-    var data = FirebaseFirestore.instance.collection('group_chat');
-    var docSna = await data.doc(groupId).get();
-
-    if (docSna.exists) {
-      List<dynamic> dataNew = docSna.get('uid_list');
-      dataNew.map((e) {
-        return e;
-      }).toList();
-      log('$dataNew');
-    }
-  }
-
-  //** File Picker form Storage */
-  // ================================
-  Future selectedFile(BuildContext context) async {
-    var snackBar = SnackBar(
-      content: const Text('Yay! A SnackBar!'),
-      action: SnackBarAction(label: 'send', onPressed: () {}),
-    );
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-    if (result.isSinglePick) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    pickFile = result.files.first;
-    log('Path: ${pickFile!.path}');
-    notifyListeners();
-  }
-
-//** FOR COLLECTION DATA OF DOCUMENT**//
-// ========================================
-  final CollectionReference _collection =
-      FirebaseFirestore.instance.collection('group_chat');
-  Future getUserAccount() async {
-    QuerySnapshot querySnapshot = await _collection.get();
-    final allData = querySnapshot.docs.map((e) => e.data()).toList();
-    log('user Account Data$allData');
   }
 }

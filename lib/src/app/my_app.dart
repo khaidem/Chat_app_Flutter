@@ -16,6 +16,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => FireStoreProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FilePickerProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

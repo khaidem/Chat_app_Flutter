@@ -72,10 +72,14 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
                           ? ids[index]['phone_number']
                           : ids[index]['email'],
                       style: TextStyle(
-                          decoration: widget.uidList.contains(ids[index]['uid'])
+                          decoration: widget.uidList.contains(
+                            ids[index]['uid'],
+                          )
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
-                          color: widget.uidList.contains(ids[index]['uid'])
+                          color: widget.uidList.contains(
+                            ids[index]['uid'],
+                          )
                               ? Colors.grey
                               : Colors.black),
                     ),
@@ -123,7 +127,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context
-              .read<AuthProvider>()
+              .read<FireStoreProvider>()
               .newUserAdd(widget.groupId, context, _selectCategory);
         },
         child: _selectCategory.isEmpty

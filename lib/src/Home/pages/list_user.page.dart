@@ -47,7 +47,7 @@ class _ListUserPageState extends State<ListUserPage> {
 // ===========================
   void _submitGroup() {
     FocusScope.of(context).unfocus();
-    context.read<AuthProvider>().addGroup(
+    context.read<FireStoreProvider>().addGroup(
           groupName.text.trim(),
           _selectCategory,
         );
