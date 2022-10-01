@@ -70,121 +70,80 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
         ),
         elevation: 0,
       ),
-      body: Container(
-        margin: const EdgeInsets.only(left: 25, right: 25),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Enter OTP ",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      body: Center(
+        child: Column(children: <Widget>[
+          Container(
+            height: 350,
+            width: 200,
+            margin: const EdgeInsets.all(10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/otp_check.png',
+              ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Pinput(
-              androidSmsAutofillMethod:
-                  AndroidSmsAutofillMethod.smsRetrieverApi,
-              length: 6,
-              defaultPinTheme: defaultPinTheme,
-              focusedPinTheme: focusedPinTheme,
-              submittedPinTheme: submittedPinTheme,
-              showCursor: true,
-              onCompleted: (pin) {
-                // if (pin.isEmpty) {
-                //   return;
-                // } else {
-                //   Navigator.of(context).pushNamedAndRemoveUntil(
-                //       HomePage.routeName, (route) => false);
-                // }
-              },
-              onChanged: (value) {
-                if (value.length == 6) {
-                  setState(
-                    () {
-                      enableButton = true;
-                      code = value;
-                      final otpSend = context.read<AuthProvider>();
-                      otpSend.otpVerification(code).then(
-                            (value) =>
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                              HomePage.routeName,
-                              (route) => false,
-                            ),
+          ),
+          Container(
+              margin: const EdgeInsets.all(10),
+              child: SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Verification ",
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    const Text('you will get a OTP via SMS'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Pinput(
+                      androidSmsAutofillMethod:
+                          AndroidSmsAutofillMethod.smsRetrieverApi,
+                      length: 6,
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+                      showCursor: true,
+                      onCompleted: (pin) {
+                        // if (pin.isEmpty) {
+                        //   return;
+                        // } else {
+                        //   Navigator.of(context).pushNamedAndRemoveUntil(
+                        //       HomePage.routeName, (route) => false);
+                        // }
+                      },
+                      onChanged: (value) {
+                        if (value.length == 6) {
+                          setState(
+                            () {
+                              enableButton = true;
+                              code = value;
+                              final otpSend = context.read<AuthProvider>();
+                              otpSend.otpVerification(code).then(
+                                    (value) => Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                      HomePage.routeName,
+                                      (route) => false,
+                                    ),
+                                  );
+                            },
                           );
-                    },
-                  );
-                } else {
-                  enableButton = false;
-                }
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     primary: Colors.green.shade600,
-            //   ),
-            //   onPressed: enableButton
-            //       ? () async {
-            //           if (mounted) {
-            //             setState(() {
-            //               isLoading = true;
-            //             });
-            //           }
-
-            //           try {
-            //             final otpSend = context.read<AuthProvider>();
-            //             //  await FirebaseFirestore.instance
-            //             //       .collection('user_accounts')
-            //             //       .doc(_auth.currentUser!.uid)
-            //             //       .set({
-            //             //     'phone_number': phone,
-            //             //   });
-
-            //             otpSend.otpVerification(code).then(
-            //                   (value) => Navigator.of(context)
-            //                       .pushNamedAndRemoveUntil(
-            //                           HomePage.routeName, (route) => false),
-            //                 );
-
-            //             await Future.delayed(
-            //               const Duration(seconds: 3),
-            //             );
-            //             // ScaffoldMessenger.of(context).showSnackBar(
-            //             //   const SnackBar(
-            //             //     content: Text('Success'),
-            //             //     duration: Duration(milliseconds: 300),
-            //             //   ),
-            //             // );
-            //           } catch (error) {
-            //             print(error.toString());
-            //           }
-            //           if (mounted) {
-            //             setState(() {
-            //               isLoading = false;
-            //             });
-            //           }
-            //         }
-            //       : null,
-            //   child: isLoading
-            //       ? const SizedBox(
-            //           width: 16,
-            //           height: 16,
-            //           child: CircularProgressIndicator(
-            //             color: Colors.white,
-            //             strokeWidth: 1.5,
-            //           ),
-            //         )
-            //       : const Text("Verify OTP"),
-            // ),
-          ],
-        ),
+                        } else {
+                          enableButton = false;
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              )),
+        ]),
       ),
     );
   }

@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Group Chat'),
+        title: const Text('List of Group Name'),
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton(
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
       body: StreamBuilder(
@@ -60,59 +60,59 @@ class _HomePageState extends State<HomePage> {
           log('${_auth.currentUser!.phoneNumber}');
 
           if (snapShot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final chatDoc = snapShot.data!.docs;
-          // print(chatDoc);
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.separated(
-              separatorBuilder: ((context, index) {
-                return const Divider(
-                  thickness: 3,
-                );
-              }),
-              itemCount: chatDoc.length,
-              itemBuilder: (ctx, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => MessagePage(
-                          groupId: chatDoc[index]['group_id'],
-                          groupName: chatDoc[index]['group_name'],
-                          uidList: chatDoc[index]['uid_list'],
-                        ),
-                        settings: RouteSettings(
-                          arguments: chatDoc[index],
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapShot.connectionState == ConnectionState.active ||
+              snapShot.connectionState == ConnectionState.done) {
+            if (snapShot.hasError) {
+              return const Text('Error');
+            } else if (snapShot.hasData) {
+              final chatDoc = snapShot.data!.docs;
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  separatorBuilder: ((context, index) {
+                    return const Divider(
+                      thickness: 1,
+                    );
+                  }),
+                  itemCount: chatDoc.length,
+                  itemBuilder: (ctx, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (ctx) => MessagePage(
+                              groupId: chatDoc[index]['group_id'],
+                              groupName: chatDoc[index]['group_name'],
+                              uidList: chatDoc[index]['uid_list'],
+                            ),
+                            settings: RouteSettings(
+                              arguments: chatDoc[index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: ListTile(
+                          title: Text(chatDoc[index]['group_name']),
+                          trailing: const Icon(Icons.arrow_forward),
+                          // leading: Text(chatDoc[index]['uid']),
                         ),
                       ),
                     );
                   },
-                  child: ListTile(
-                    title: Text(chatDoc[index]['group_name']),
-                    trailing: const Icon(Icons.arrow_forward),
-                    // leading: Text(chatDoc[index]['uid']),
-                  ),
-                  // child: Container(
-                  //   decoration: BoxDecoration(
-                  //     color: Theme.of(context).colorScheme.secondary,
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   height: 40,
-                  //   child: Center(
-                  //     child: Text(
-                  //       chatDoc[index]['goup_name'],
-                  //       style: const TextStyle(color: Colors.white),
-                  //     ),
-                  //   ),
-                  // ),
-                );
-              },
-            ),
-          );
+                ),
+              );
+            } else {
+              return const Center(child: Text('Empty data'));
+            }
+          } else {
+            return Text('State: ${snapShot.connectionState}');
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

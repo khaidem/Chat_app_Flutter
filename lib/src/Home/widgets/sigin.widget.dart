@@ -42,11 +42,18 @@ class _SigInWidgetState extends State<SigInWidget> {
                 children: [
                   ClipOval(
                     child: SizedBox.fromSize(
-                      size: const Size.fromRadius(50),
-                      child: Image.asset(
-                          'assets/images/Blue and Yellow Online Message Bubble Chat Logo(1).png'),
+                      size: const Size.fromRadius(100),
+                      child: Image.asset('assets/images/chatImage.png'),
                     ),
                   ),
+                  const Text(
+                    'Let\'s Chat',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 30.0),
+                  )
                 ],
               ),
             ),
@@ -65,67 +72,19 @@ class _SigInWidgetState extends State<SigInWidget> {
                 const SizedBox(
                   height: 10,
                 ),
-                // ElevatedButton.icon(
-                //   onPressed: () {
-                //     Navigator.of(context)
-                //         .pushNamed(PhoneNumberVerificationWidget.routeName);
-                //   },
-                //   icon: const Icon(FontAwesomeIcons.phoneFlip),
-                //   label: const Text('Continue with Phone Number'),
-                // ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: Container(
-                //         margin: const EdgeInsets.only(left: 75.0, right: 20.0),
-                //         child: const Divider(
-                //           thickness: 2,
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //     ),
-                //     const Text(
-                //       "OR",
-                //     ),
-                //     Expanded(
-                //       child: Container(
-                //         margin: const EdgeInsets.only(left: 20.0, right: 75.0),
-                //         child: const Divider(
-                //           thickness: 2,
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 FlutterSocialButton(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(PhoneNumberVerificationWidget.routeName);
+                  },
                   buttonType: ButtonType.phone,
                 ),
                 FlutterSocialButton(
-                  onTap: () {},
+                  onTap: () {
+                    googleSigIn();
+                  },
                   buttonType: ButtonType.google,
                 ),
-                // FlutterSocialButton(
-                //   onTap: () {},
-                // ),
-
-                // GoogleAuthButton(
-                //   onPressed: () {
-                //     // googleSigIn();
-                //   },
-                //   style: const AuthButtonStyle(
-                //       buttonType: AuthButtonType.secondary,
-                //       iconType: AuthIconType.outlined),
-                //   text: 'CONTINUE WITH GOOGLE',
-                // )
-                // OutlinedButton.icon(
-                //   onPressed: () {
-                //     googleSigIn();
-                //   },
-                //   icon: const Icon(FontAwesomeIcons.google),
-                //   label: const Text('Continue with Google SigIn'),
-                // )
               ],
             ))
           ],
