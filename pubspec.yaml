@@ -54,6 +54,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.2.50-beta
   auth_buttons: ^3.0.0
   flutter_social_button: ^1.1.4
+  flutter_native_splash: ^2.2.9
  
 
 dev_dependencies:
@@ -66,11 +67,25 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.10.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_icons: 
+  android: true
+  ios: true
+  image_path: "assets/images/chatlogo.png"
+  adaptive_icon_background: "#0000FF"
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/chatlogo.png 
+  branding_mode: bottom
+  android: true
+  ios: true
+  fill: 
+  android_disable_fullscreen: true
 flutter:
 
   # The following line ensures that the Material Icons font is

@@ -28,11 +28,16 @@ class GroupUserList extends StatelessWidget {
             .where('uid', whereIn: uidList)
             .snapshots(),
         builder: (_, AsyncSnapshot snapShot) {
-          if (snapShot.hasError) {
-            return const Text('Error');
+          if (!snapShot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
-
-          if (snapShot.hasData) {
+          if (snapShot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text('No data Found'),
+            );
+          } else {
             var outPut = snapShot.data.docs;
             log('Show group user data $outPut');
 
@@ -54,9 +59,6 @@ class GroupUserList extends StatelessWidget {
               },
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
         },
       ),
     );

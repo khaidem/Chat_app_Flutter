@@ -30,11 +30,14 @@ class AuthProvider with ChangeNotifier {
       log(ggAuth.idToken.toString());
 
       _user = googleUser;
+      _user = googleUser;
       if (_user == null) {
         return;
       }
+
       //** Obtain the auth details form the request */
       final googleAuth = await googleUser.authentication;
+
       //** Create new credentail */
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,

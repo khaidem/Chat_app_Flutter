@@ -16,10 +16,14 @@ class SigInWidget extends StatefulWidget {
 class _SigInWidgetState extends State<SigInWidget> {
   String verificationIdReceived = '';
   bool isSignedIn = false;
+  bool isloading = false;
 
 //*** After GoogleSigIn and Route  */
 // ===============================
   void googleSigIn() async {
+    setState(() {
+      isloading = true;
+    });
     final provider = context.read<AuthProvider>();
 
     await provider.googleSigIn().then(
@@ -79,12 +83,16 @@ class _SigInWidgetState extends State<SigInWidget> {
                   },
                   buttonType: ButtonType.phone,
                 ),
-                FlutterSocialButton(
-                  onTap: () {
-                    googleSigIn();
-                  },
-                  buttonType: ButtonType.google,
-                ),
+                isloading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : FlutterSocialButton(
+                        onTap: () {
+                          googleSigIn();
+                        },
+                        buttonType: ButtonType.google,
+                      ),
               ],
             ))
           ],
