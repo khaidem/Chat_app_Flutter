@@ -16,86 +16,144 @@ class SigInWidget extends StatefulWidget {
 class _SigInWidgetState extends State<SigInWidget> {
   String verificationIdReceived = '';
   bool isSignedIn = false;
-  bool isloading = false;
+  bool isLoading = false;
 
 //*** After GoogleSigIn and Route  */
 // ===============================
   void googleSigIn() async {
-    setState(() {
-      isloading = true;
-    });
+    BuildContext? dialogContext;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          content: Row(
+            children: const [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 10,
+              ),
+              Text('Authenticating with Google...')
+            ],
+          ),
+        );
+      },
+    );
+
     final provider = context.read<AuthProvider>();
 
     await provider.googleSigIn().then(
           (value) => Navigator.pushNamedAndRemoveUntil(
               context, HomePage.routeName, (route) => false),
         );
+    Navigator.pop(dialogContext!);
+  }
+
+//**Exit app warning */
+// =======================
+  Future<bool> _onWillPop(BuildContext context) async {
+    bool? exitResult = await showDialog(
+      context: context,
+      builder: (context) => _buildExitDialog(context),
+    );
+
+    return exitResult ?? false;
+  }
+
+//**Exit app warning Dialog */
+// =======================
+  AlertDialog _buildExitDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Please confirm'),
+      content: const Text('Do you want to exit the app?'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('No'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text('Yes'),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: const Color.fromARGB(255, 32, 48, 61),
-        child: Column(
-          children: [
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipOval(
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(100),
-                      child: Image.asset('assets/images/chatImage.png'),
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+        body: Container(
+          color: const Color.fromARGB(255, 32, 48, 61),
+          child: Column(
+            children: [
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                      child: SizedBox.fromSize(
+                        size: const Size.fromRadius(100),
+                        child: Image.asset('assets/images/chatImage.png'),
+                      ),
                     ),
-                  ),
-                  const Text(
-                    'Let\'s Chat',
-                    style: TextStyle(
+                    const Text(
+                      'Let\'s Chat',
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
-                        fontSize: 30.0),
-                  )
-                ],
-              ),
-            ),
-            Flexible(
-                child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Welcome! How would you like to Connect?',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                        fontSize: 30.0,
+                      ),
+                    )
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FlutterSocialButton(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(PhoneNumberVerificationWidget.routeName);
-                  },
-                  buttonType: ButtonType.phone,
-                ),
-                isloading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : FlutterSocialButton(
-                        onTap: () {
-                          googleSigIn();
-                        },
-                        buttonType: ButtonType.google,
+              ),
+              Flexible(
+                  child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Welcome! How would you like to Connect?',
+                        style: TextStyle(color: Colors.white),
                       ),
-              ],
-            ))
-          ],
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FlutterSocialButton(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(PhoneNumberVerificationWidget.routeName);
+                    },
+                    buttonType: ButtonType.phone,
+                  ),
+                  FlutterSocialButton(
+                    onTap: () {
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     duration: const Duration(seconds: 4),
+                      //     content: Row(
+                      //       children: const [
+                      //         CircularProgressIndicator(),
+                      //         Text('Loading')
+                      //       ],
+                      //     ),
+                      //   ),
+                      // );
+                      googleSigIn();
+                    },
+                    buttonType: ButtonType.google,
+                  ),
+                ],
+              ))
+            ],
+          ),
         ),
       ),
     );
