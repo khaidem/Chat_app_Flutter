@@ -76,11 +76,11 @@ dev_dependencies:
 flutter_icons: 
   android: true
   ios: true
-  image_path: "assets/images/chatlogo.png"
+  image_path: "assets/images/chatbubble.png"
   adaptive_icon_background: "#0000FF"
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/images/chatlogo.png 
+  image: assets/images/chatbubble.png 
   branding_mode: bottom
   android: true
   ios: true

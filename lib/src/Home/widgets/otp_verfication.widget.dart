@@ -12,17 +12,39 @@ class OtpVerificationPage extends StatefulWidget {
   State<OtpVerificationPage> createState() => _OtpVerificationPageState();
 }
 
-class _OtpVerificationPageState extends State<OtpVerificationPage> {
+class _OtpVerificationPageState extends State<OtpVerificationPage>
+    with SingleTickerProviderStateMixin {
   TextEditingController otpSend = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   var code = '';
   bool isLoading = false;
   bool enableButton = false;
+  int _counter = 0;
+  AnimationController? _controller;
+  int levelClock = 180;
+  void Increment() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        seconds: levelClock,
+      ),
+    );
+    _controller!.forward();
+  }
 
   @override
   void dispose() {
     otpSend.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -100,6 +122,21 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     const SizedBox(
                       height: 10,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('wait'),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Countdown(
+                            animation: StepTween(begin: levelClock, end: 0)
+                                .animate(_controller!))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Pinput(
                       androidSmsAutofillMethod:
                           AndroidSmsAutofillMethod.smsRetrieverApi,
@@ -144,6 +181,34 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                 ),
               )),
         ]),
+      ),
+    );
+  }
+}
+
+class Countdown extends AnimatedWidget {
+  Countdown({Key? key, required this.animation})
+      : super(key: key, listenable: animation);
+  Animation<int> animation;
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation.value);
+
+    String timerText =
+        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    print('animation.value  ${animation.value} ');
+    print('inMinutes ${clockTimer.inMinutes.toString()}');
+    print('inSeconds ${clockTimer.inSeconds.toString()}');
+    print(
+        'inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
+
+    return Text(
+      timerText,
+      style: TextStyle(
+        fontSize: 20,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
