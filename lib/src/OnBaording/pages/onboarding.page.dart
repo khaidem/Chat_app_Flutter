@@ -4,7 +4,7 @@ import 'package:goole_sigin_firebase/src/router/tab_bar.dart';
 
 import 'package:provider/provider.dart';
 
-import '../example.dart';
+import '../../Home/example.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -76,6 +76,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

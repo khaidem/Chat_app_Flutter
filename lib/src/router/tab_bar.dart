@@ -32,6 +32,7 @@ class _TabBarRouterState extends State<TabBarRouter>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 42, 126, 44),
           title: const Text('Bubble Chat'),
           actions: [
             DropdownButtonHideUnderline(
