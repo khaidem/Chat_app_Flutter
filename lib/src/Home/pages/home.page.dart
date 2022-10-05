@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../example.dart';
 
@@ -25,33 +24,33 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Group List Name'),
-        actions: [
-          DropdownButtonHideUnderline(
-            child: DropdownButton(
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Add New user',
-                  child: SizedBox(
-                    child: Text("Logout"),
-                  ),
-                ),
-              ],
-              onChanged: (value) {
-                if (value == 'Add New user') {
-                  context.read<AuthProvider>().signOut();
-                  Navigator.of(context).pushReplacementNamed('/');
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Group List Name'),
+      //   actions: [
+      //     DropdownButtonHideUnderline(
+      //       child: DropdownButton(
+      //         icon: const Icon(
+      //           Icons.more_vert,
+      //           color: Colors.white,
+      //         ),
+      //         items: const [
+      //           DropdownMenuItem(
+      //             value: 'Add New user',
+      //             child: SizedBox(
+      //               child: Text("Logout"),
+      //             ),
+      //           ),
+      //         ],
+      //         onChanged: (value) {
+      //           if (value == 'Add New user') {
+      //             context.read<AuthProvider>().signOut();
+      //             Navigator.of(context).pushReplacementNamed('/');
+      //           }
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: StreamBuilder(
         stream: collectionRef.where('uid_list',
             arrayContainsAny: [_auth.currentUser!.uid]).snapshots(),
@@ -72,12 +71,7 @@ class _HomePageState extends State<HomePage> {
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                separatorBuilder: ((context, index) {
-                  return const Divider(
-                    thickness: 1,
-                  );
-                }),
+              child: ListView.builder(
                 itemCount: chatDoc.length,
                 itemBuilder: (ctx, index) {
                   return InkWell(
@@ -95,15 +89,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ListTile(
-                        title: Text(chatDoc[index]['group_name']),
-                        trailing: const Icon(Icons.arrow_forward),
-                        // leading: Text(chatDoc[index]['uid']),
-                      ),
+                    child: ListTile(
+                      title: Text(chatDoc[index]['group_name']),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      // leading: Text(chatDoc[index]['uid']),
                     ),
                   );
                 },
@@ -112,13 +101,13 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(ListUserPage.routeName);
-        },
-        child: const Icon(Icons.group_add),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).pushNamed(ListUserPage.routeName);
+      //   },
+      //   child: const Icon(Icons.group_add),
+      // ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/router/router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
@@ -125,7 +126,10 @@ class _OtpVerificationPageState extends State<OtpVerificationPage>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('wait'),
+                        Text(
+                          'wait :'.toUpperCase(),
+                          style: const TextStyle(color: Colors.blue),
+                        ),
                         const SizedBox(
                           width: 5,
                         ),
@@ -163,7 +167,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage>
                               otpSend.otpVerification(code).then(
                                     (value) => Navigator.of(context)
                                         .pushNamedAndRemoveUntil(
-                                      HomePage.routeName,
+                                      TabBarRouter.routeName,
                                       (route) => false,
                                     ),
                                   );

@@ -109,7 +109,7 @@ class AuthProvider with ChangeNotifier {
             log(e.toString());
           },
           codeSent: (String verificationId, int? resendToken) {
-            SigInWidget.verify = verificationId;
+            OnBoardingPage.verify = verificationId;
 
             Navigator.of(context).pushNamedAndRemoveUntil(
                 OtpVerificationPage.routeName, (route) => false);
@@ -126,7 +126,7 @@ class AuthProvider with ChangeNotifier {
   Future otpVerification(String code) async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: SigInWidget.verify, smsCode: code);
+          verificationId: OnBoardingPage.verify, smsCode: code);
       await _auth.signInWithCredential(credential);
       _firestore.collection('user_accounts').doc(_auth.currentUser!.uid).set({
         'active': true,

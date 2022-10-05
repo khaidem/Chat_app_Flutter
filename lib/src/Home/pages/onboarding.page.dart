@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:goole_sigin_firebase/src/router/tab_bar.dart';
 
 import 'package:provider/provider.dart';
 
 import '../example.dart';
 
-class SigInWidget extends StatefulWidget {
-  const SigInWidget({Key? key}) : super(key: key);
+class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({Key? key}) : super(key: key);
   static String verify = '';
 
   @override
-  State<SigInWidget> createState() => _SigInWidgetState();
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-class _SigInWidgetState extends State<SigInWidget> {
+class _OnBoardingPageState extends State<OnBoardingPage> {
   String verificationIdReceived = '';
   bool isSignedIn = false;
   bool isLoading = false;
@@ -21,7 +22,6 @@ class _SigInWidgetState extends State<SigInWidget> {
 //*** After GoogleSigIn and Route  */
 // ===============================
   void googleSigIn() async {
-    BuildContext? dialogContext;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -39,14 +39,13 @@ class _SigInWidgetState extends State<SigInWidget> {
         );
       },
     );
-
+    if (!mounted) return;
     final provider = context.read<AuthProvider>();
 
     await provider.googleSigIn().then(
           (value) => Navigator.pushNamedAndRemoveUntil(
-              context, HomePage.routeName, (route) => false),
+              context, TabBarRouter.routeName, (route) => false),
         );
-    Navigator.pop(dialogContext!);
   }
 
 //**Exit app warning */

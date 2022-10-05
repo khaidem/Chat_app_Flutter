@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Home/example.dart';
+import '../router/router.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -24,18 +27,19 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Bubble Chat',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
         ),
         debugShowCheckedModeBanner: false,
+        // home: const TabBarRouter(),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapShot) {
             if (snapShot.hasData) {
-              return const HomePage();
+              return const TabBarRouter();
             }
-            return const SigInWidget();
+            return const OnBoardingPage();
           },
         ),
         routes: {
@@ -44,6 +48,7 @@ class MyApp extends StatelessWidget {
           PhoneNumberVerificationWidget.routeName: (ctx) =>
               const PhoneNumberVerificationWidget(),
           ListUserPage.routeName: (context) => const ListUserPage(),
+          TabBarRouter.routeName: (context) => const TabBarRouter(),
         },
       ),
     );

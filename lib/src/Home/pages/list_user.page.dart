@@ -3,10 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
-import '../example.dart';
-
 class ListUserPage extends StatefulWidget {
   const ListUserPage({Key? key}) : super(key: key);
   static const routeName = '/ListUserPage';
@@ -19,6 +15,7 @@ class _ListUserPageState extends State<ListUserPage> {
   final TextEditingController groupName = TextEditingController();
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
+  int count = 2;
 
   final List _selectCategory = [];
 
@@ -46,11 +43,14 @@ class _ListUserPageState extends State<ListUserPage> {
 // ===========================
   void _submitGroup() {
     FocusScope.of(context).unfocus();
-    context.read<FireStoreProvider>().addGroup(
-          groupName.text.trim(),
-          _selectCategory,
-        );
+    // context.read<FireStoreProvider>().addGroup(
+    //       groupName.text.trim(),
+    //       _selectCategory,
+    //     );
     Navigator.of(context).popUntil((route) => route.isFirst);
+    // Navigator.popUntil(
+    //     context, ModalRoute.withName(Navigator.defaultRouteName));
+    // Navigator.popUntil(context, ModalRoute.withName('/'));
 
     groupName.clear();
   }
@@ -58,9 +58,6 @@ class _ListUserPageState extends State<ListUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User List'),
-      ),
       body: StreamBuilder(
         stream: collectionRef.snapshots(),
         builder: (context, AsyncSnapshot asyncSnapshot) {
@@ -114,44 +111,71 @@ class _ListUserPageState extends State<ListUserPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Center(
-                child: SizedBox(
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: TextFormField(
-                      controller: groupName,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Enter group Name",
-                        labelText: 'Enter group Name',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                          ),
-                        ),
+              context: context,
+              builder: (_) {
+                return AlertDialog(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(32.0),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              actions: [
-                Center(
-                  child: ElevatedButton(
-                    onPressed: _submitGroup,
-                    child: const Text('Submit'),
-                  ),
-                ),
-              ],
-            ),
-          );
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.min,
+                          children: const <Widget>[
+                            Text(
+                              "Enter Group Name",
+                              style: TextStyle(fontSize: 24.0),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                          height: 4.0,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 30.0, right: 30.0),
+                          child: TextField(
+                            controller: groupName,
+                            decoration: const InputDecoration(
+                              hintText: "Enter Group Name",
+                              border: InputBorder.none,
+                            ),
+                            maxLines: 8,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _submitGroup();
+                          },
+                          child: Container(
+                            padding:
+                                const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                            decoration: const BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(32.0),
+                                  bottomRight: Radius.circular(32.0)),
+                            ),
+                            child: const Text(
+                              'Submit',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
+              });
         },
         child: _selectCategory.isEmpty
             ? const Icon(Icons.add)
