@@ -167,7 +167,7 @@ class _ListUserPageState extends State<ListUserPage> {
                             padding:
                                 const EdgeInsets.only(top: 20.0, bottom: 20.0),
                             decoration: const BoxDecoration(
-                              color: Colors.blueGrey,
+                              color: mainColors,
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(32.0),
                                   bottomRight: Radius.circular(32.0)),

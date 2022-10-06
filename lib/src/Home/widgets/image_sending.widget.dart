@@ -54,7 +54,22 @@ class SendingImageWidget extends StatelessWidget {
                   height: 10,
                 ),
                 ClipRect(
-                  child: Image.network(sendFile),
+                  child: Image.network(
+                    sendFile,
+                    frameBuilder:
+                        (context, child, frame, wasSynchronouslyLoaded) {
+                      return child;
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
                 )
               ],
             ),
