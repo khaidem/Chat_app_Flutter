@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:goole_sigin_firebase/src/router/tab_bar.dart';
 
 import 'package:provider/provider.dart';
@@ -23,29 +24,51 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 // ===============================
   void googleSigIn() async {
     showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          content: Row(
-            children: const [
-              CircularProgressIndicator(),
-              SizedBox(
-                width: 10,
-              ),
-              Text('Authenticating with Google...')
-            ],
-          ),
-        );
-      },
-    );
-    if (!mounted) return;
-    final provider = context.read<AuthProvider>();
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext dialogContext) => FutureBuilder(
+            future: GoogleSignIn(scopes: ['email']).signIn(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                context.read<AuthProvider>().googleSigIn().then((value) =>
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, TabBarRouter.routeName, (route) => true));
+              } else if (snapshot.hasError) {
+                Navigator.popUntil(context, (route) => true);
+              }
+              return AlertDialog(
+                content: Row(
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('Authenticating with Google...')
+                  ],
+                ),
+              );
+            })
 
-    await provider.googleSigIn().then(
-          (value) => Navigator.pushNamedAndRemoveUntil(
-              context, TabBarRouter.routeName, (route) => false),
+        // return AlertDialog(
+        //   content: Row(
+        //     children: const [
+        //       CircularProgressIndicator(),
+        //       SizedBox(
+        //         width: 10,
+        //       ),
+        //       Text('Authenticating with Google...')
+        //     ],
+        //   ),
+        // );
+
         );
+    // if (!mounted) return;
+    // final provider = context.read<AuthProvider>();
+
+    // await provider.googleSigIn().then(
+    //       (value) => Navigator.pushNamedAndRemoveUntil(
+    //           context, TabBarRouter.routeName, (route) => false),
+    //     );
   }
 
 //**Exit app warning */

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../example.dart';
+import '../../Home/example.dart';
 
 class PhoneNumberVerificationWidget extends StatefulWidget {
   const PhoneNumberVerificationWidget({Key? key}) : super(key: key);

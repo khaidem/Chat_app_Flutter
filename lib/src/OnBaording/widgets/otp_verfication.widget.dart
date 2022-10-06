@@ -3,7 +3,7 @@ import 'package:goole_sigin_firebase/src/router/router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-import '../example.dart';
+import '../../Home/example.dart';
 
 class OtpVerificationPage extends StatefulWidget {
   const OtpVerificationPage({Key? key}) : super(key: key);
