@@ -134,8 +134,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage>
                           width: 5,
                         ),
                         Countdown(
-                            animation: StepTween(begin: levelClock, end: 0)
-                                .animate(_controller!))
+                          animation: StepTween(begin: levelClock, end: 0)
+                              .animate(_controller!),
+                        ),
                       ],
                     ),
                     const SizedBox(

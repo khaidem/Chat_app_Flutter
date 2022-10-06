@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../Home/example.dart';
+import '../core/const.dart';
 
 class TabBarRouter extends StatefulWidget {
   const TabBarRouter({Key? key}) : super(key: key);
@@ -32,7 +34,8 @@ class _TabBarRouterState extends State<TabBarRouter>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 42, 126, 44),
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+          backgroundColor: mainColors,
           title: const Text('Bubble Chat'),
           actions: [
             DropdownButtonHideUnderline(
@@ -59,18 +62,18 @@ class _TabBarRouterState extends State<TabBarRouter>
             ),
           ],
           bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(
-                // icon: Icon(Icons.chat),
-                text: 'Group name'.toUpperCase(),
-              ),
-              Tab(
-                // icon: Icon(Icons.person),
-                text: 'All Person'.toUpperCase(),
-              ),
-            ],
-          ),
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  // icon: Icon(Icons.chat),
+                  text: 'Group name'.toUpperCase(),
+                ),
+                Tab(
+                  // icon: Icon(Icons.person),
+                  text: 'All Person'.toUpperCase(),
+                ),
+              ],
+              indicatorColor: Colors.white),
         ),
         body: TabBarView(
             controller: _tabController,

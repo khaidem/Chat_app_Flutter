@@ -28,9 +28,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Bubble Chat',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
         debugShowCheckedModeBanner: false,
         // home: const TabBarRouter(),
         home: StreamBuilder(

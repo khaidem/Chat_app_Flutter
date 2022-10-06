@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/const.dart';
+
 class ListUserPage extends StatefulWidget {
   const ListUserPage({Key? key}) : super(key: key);
   static const routeName = '/ListUserPage';
@@ -18,6 +20,7 @@ class _ListUserPageState extends State<ListUserPage> {
   int count = 2;
 
   final List _selectCategory = [];
+  TabController? _tabController;
 
   final _auth = FirebaseFirestore.instance;
 
@@ -43,11 +46,13 @@ class _ListUserPageState extends State<ListUserPage> {
 // ===========================
   void _submitGroup() {
     FocusScope.of(context).unfocus();
+    Navigator.of(context).pop();
+    // _tabController!.index = 0;
     // context.read<FireStoreProvider>().addGroup(
     //       groupName.text.trim(),
     //       _selectCategory,
     //     );
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    // Navigator.of(context).popUntil((route) => route.isFirst);
     // Navigator.popUntil(
     //     context, ModalRoute.withName(Navigator.defaultRouteName));
     // Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -109,6 +114,7 @@ class _ListUserPageState extends State<ListUserPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: mainColors,
         onPressed: () {
           showDialog(
               context: context,
@@ -127,7 +133,7 @@ class _ListUserPageState extends State<ListUserPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           mainAxisSize: MainAxisSize.min,
-                          children: const <Widget>[
+                          children: const [
                             Text(
                               "Enter Group Name",
                               style: TextStyle(fontSize: 24.0),
@@ -161,7 +167,7 @@ class _ListUserPageState extends State<ListUserPage> {
                             padding:
                                 const EdgeInsets.only(top: 20.0, bottom: 20.0),
                             decoration: const BoxDecoration(
-                              color: Colors.green,
+                              color: Colors.blueGrey,
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(32.0),
                                   bottomRight: Radius.circular(32.0)),

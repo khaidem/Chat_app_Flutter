@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:goole_sigin_firebase/src/Home/pages/group_user_list.page.dart';
 
+import '../../core/const.dart';
 import '../example.dart';
 
 class MessagePage extends StatefulWidget {
@@ -24,7 +26,10 @@ class _MessagePageState extends State<MessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        backgroundColor: mainColors,
         title: InkWell(
           onTap: () {
             Navigator.of(context).push(
@@ -72,7 +77,7 @@ class _MessagePageState extends State<MessagePage> {
       ),
       body: Column(
         children: [
-          Flexible(
+          Expanded(
             child: SendingMessageBodyWidget(
               groupId: widget.groupId,
               uidList: widget.uidList,

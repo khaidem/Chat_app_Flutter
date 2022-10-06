@@ -38,19 +38,26 @@ class SendingMessageBodyWidget extends StatelessWidget {
             final chatDocs = chatSnapShot.data.docs;
 
             return ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: chatDocs.length,
               reverse: true,
-              itemBuilder: (ctx, index) => MessageBubbleWidget(
-                message: chatDocs[index]['message'],
+              itemBuilder: (ctx, index) => chatDocs[index]['file_send'].isEmpty
+                  ? MessageBubbleWidget(
+                      message: chatDocs[index]['message'],
 
-                ///*we can compare the id of current user with the id message  */
-                //** We dont need uid to compare String and bool in these */
-                isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
-                key: ValueKey(chatDocs[index]),
-                file_send: chatDocs[index]['file_send'],
-                sendBy: chatDocs[index]['sent_by'],
-                uidList: uidList,
-              ),
+                      ///*we can compare the id of current user with the id message  */
+                      //** We dont need uid to compare String and bool in these */
+                      isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
+                      key: ValueKey(chatDocs[index]),
+
+                      sendBy: chatDocs[index]['sent_by'],
+                      uidList: uidList,
+                    )
+                  : SendingImageWidget(
+                      isMe: chatDocs[index]['sent_by'] == futureSnapshot.data,
+                      sendFile: chatDocs[index]['file_send'],
+                      sendBy: chatDocs[index]['sent_by'],
+                    ),
             );
           },
         );

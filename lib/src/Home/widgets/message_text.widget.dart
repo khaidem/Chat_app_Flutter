@@ -33,36 +33,84 @@ class _MessageTextWidgetState extends State<MessageTextWidget> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: _sendController,
-              decoration: InputDecoration(
-                labelText: 'Send a Message',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    context
-                        .read<FilePickerProvider>()
-                        .uploadFile(widget.groupId);
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _enterMessage = value;
-                });
-              },
+              child: Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
+            child: Row(
+              children: [
+                moodIcon(),
+                Flexible(
+                  child: TextField(
+                    controller: _sendController,
+                    decoration: const InputDecoration(
+                      hintText: 'Message',
+                      hintStyle: TextStyle(color: Color(0xFF00BFA5)),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _enterMessage = value;
+                      });
+                    },
+                  ),
+                ),
+                attachFile(widget: widget)
+              ],
+            ),
+          )),
+          const SizedBox(
+            width: 10,
           ),
-          IconButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: _enterMessage.trim().isEmpty ? null : _sendMessage,
-            icon: const Icon(Icons.send),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF00BFA5),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: IconButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: _enterMessage.trim().isEmpty ? null : _sendMessage,
+              icon: const Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
+            ),
           )
         ],
       ),
     );
   }
+}
+
+class attachFile extends StatelessWidget {
+  const attachFile({
+    Key? key,
+    required this.widget,
+  }) : super(key: key);
+
+  final MessageTextWidget widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        context.read<FilePickerProvider>().uploadFile(widget.groupId);
+      },
+      icon: const Icon(
+        Icons.attach_file,
+        color: Color(0xFF00BFA5),
+      ),
+    );
+  }
+}
+
+Widget moodIcon() {
+  return IconButton(
+    onPressed: () {},
+    icon: const Icon(
+      Icons.mood,
+      color: Color(0xFF00BFA5),
+    ),
+  );
 }

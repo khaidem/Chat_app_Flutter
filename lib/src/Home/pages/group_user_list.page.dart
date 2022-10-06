@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/core/const.dart';
 
 class GroupUserList extends StatelessWidget {
   const GroupUserList({
@@ -19,6 +20,7 @@ class GroupUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColors,
         title: const Text(' Group user'),
       ),
       body: StreamBuilder(

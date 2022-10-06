@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:goole_sigin_firebase/src/Home/data/repo/firebase_api.repo.dart';
 import 'package:goole_sigin_firebase/src/Home/example.dart';
+import 'package:goole_sigin_firebase/src/core/const.dart';
 import 'package:provider/provider.dart';
 
 class AddMoreUserPage extends StatefulWidget {
@@ -51,6 +52,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColors,
         title: const Text(' Add User '),
       ),
       body: StreamBuilder(
@@ -123,6 +125,7 @@ class _AddMoreUserPageState extends State<AddMoreUserPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: mainColors,
         onPressed: () {
           context
               .read<FireStoreProvider>()
