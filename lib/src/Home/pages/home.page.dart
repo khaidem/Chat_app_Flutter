@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:goole_sigin_firebase/src/app/my_app.dart';
 
 import '../example.dart';
 
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (ctx, index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
+                      navigatorKey.currentState?.push(
                         MaterialPageRoute(
                           builder: (ctx) => MessagePage(
                             groupId: chatDoc[index]['group_id'],

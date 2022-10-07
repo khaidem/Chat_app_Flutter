@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/const.dart';
+import '../../router/router.dart';
+import '../example.dart';
 
 class ListUserPage extends StatefulWidget {
   const ListUserPage({Key? key}) : super(key: key);
@@ -46,16 +49,26 @@ class _ListUserPageState extends State<ListUserPage> {
 // ===========================
   void _submitGroup() {
     FocusScope.of(context).unfocus();
-    Navigator.of(context).pop();
-    // _tabController!.index = 0;
-    // context.read<FireStoreProvider>().addGroup(
-    //       groupName.text.trim(),
-    //       _selectCategory,
-    //     );
+
+    //**First pop form showDialog */
+    Navigator.pop(context);
+    //** Second pop form ListUserPage */
+    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const TabBarRouter(),
+      ),
+    );
+
+    context.read<FireStoreProvider>().addGroup(
+          groupName.text.trim(),
+          _selectCategory,
+        );
+    // ==========================================================
+    //*** If w want to pop to the last page not use in show dialog when we uses it
+    // * it will not work*/
     // Navigator.of(context).popUntil((route) => route.isFirst);
-    // Navigator.popUntil(
-    //     context, ModalRoute.withName(Navigator.defaultRouteName));
-    // Navigator.popUntil(context, ModalRoute.withName('/'));
 
     groupName.clear();
   }
@@ -143,42 +156,72 @@ class _ListUserPageState extends State<ListUserPage> {
                         const SizedBox(
                           height: 5.0,
                         ),
-                        const Divider(
-                          color: Colors.grey,
-                          height: 4.0,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 30.0, right: 30.0),
-                          child: TextField(
-                            controller: groupName,
-                            decoration: const InputDecoration(
-                              hintText: "Enter Group Name",
-                              border: InputBorder.none,
-                            ),
-                            maxLines: 8,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _submitGroup();
-                          },
-                          child: Container(
+                        // const Divider(
+                        //   color: Colors.grey,
+                        //   height: 4.0,
+                        // ),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
                             padding:
-                                const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                            decoration: const BoxDecoration(
-                              color: mainColors,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(32.0),
-                                  bottomRight: Radius.circular(32.0)),
-                            ),
-                            child: const Text(
-                              'Submit',
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
+                                const EdgeInsets.only(left: 30.0, right: 30.0),
+                            child: TextField(
+                              controller: groupName,
+                              decoration: const InputDecoration(
+                                hintText: "Enter Group Name",
+                                border: InputBorder.none,
+                              ),
+                              maxLines: 8,
                             ),
                           ),
                         ),
+                        // const Divider(
+                        //   color: Colors.grey,
+                        //   height: 4.0,
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              style:
+                                  ElevatedButton.styleFrom(primary: mainColors),
+                              onPressed: () {
+                                _submitGroup();
+                              },
+                              child: const Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              style:
+                                  ElevatedButton.styleFrom(primary: mainColors),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                          ],
+                        )
+                        // InkWell(
+                        //   onTap: () {
+                        //     _submitGroup();
+                        //   },
+                        //   child: Container(
+                        //     padding:
+                        //         const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                        //     decoration: const BoxDecoration(
+                        //       color: mainColors,
+                        //       borderRadius: BorderRadius.only(
+                        //           bottomLeft: Radius.circular(32.0),
+                        //           bottomRight: Radius.circular(32.0)),
+                        //     ),
+                        //     child: const Text(
+                        //       'Submit',
+                        //       style: TextStyle(color: Colors.white),
+                        //       textAlign: TextAlign.center,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ));
               });

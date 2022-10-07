@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../Home/example.dart';
 import '../router/router.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({
     Key? key,
@@ -27,9 +29,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         title: 'Bubble Chat',
         debugShowCheckedModeBanner: false,
-        // home: const TabBarRouter(),
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapShot) {

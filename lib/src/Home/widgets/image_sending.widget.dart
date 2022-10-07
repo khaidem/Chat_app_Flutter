@@ -12,7 +12,6 @@ class SendingImageWidget extends StatelessWidget {
   final bool isMe;
   final String sendFile;
   final String sendBy;
-  final isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +69,7 @@ class SendingImageWidget extends StatelessWidget {
                       }
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),
