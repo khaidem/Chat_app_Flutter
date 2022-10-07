@@ -20,7 +20,6 @@ class _ListUserPageState extends State<ListUserPage> {
   int count = 2;
 
   final List _selectCategory = [];
-  TabController? _tabController;
 
   final _auth = FirebaseFirestore.instance;
 
