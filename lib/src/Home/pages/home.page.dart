@@ -72,7 +72,12 @@ class _HomePageState extends State<HomePage> {
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder: ((context, index) {
+                  return const Divider(
+                    thickness: 3,
+                  );
+                }),
                 itemCount: chatDoc.length,
                 itemBuilder: (ctx, index) {
                   return InkWell(

@@ -43,22 +43,25 @@ class GroupUserList extends StatelessWidget {
             var outPut = snapShot.data.docs;
             log('Show group user data $outPut');
 
-            return ListView.separated(
-              separatorBuilder: ((context, index) {
-                return const Divider(
-                  thickness: 3,
-                );
-              }),
-              itemCount: outPut.length,
-              itemBuilder: (ctx, index) {
-                return ListTile(
-                  title: Text(
-                    outPut[index]['email'].isEmpty
-                        ? outPut[index]['phone_number']
-                        : outPut[index]['email'],
-                  ),
-                );
-              },
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.separated(
+                separatorBuilder: ((context, index) {
+                  return const Divider(
+                    thickness: 3,
+                  );
+                }),
+                itemCount: outPut.length,
+                itemBuilder: (ctx, index) {
+                  return ListTile(
+                    title: Text(
+                      outPut[index]['email'].isEmpty
+                          ? outPut[index]['phone_number']
+                          : outPut[index]['email'],
+                    ),
+                  );
+                },
+              ),
             );
           }
         },

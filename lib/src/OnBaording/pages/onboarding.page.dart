@@ -129,7 +129,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       ClipOval(
                         child: SizedBox.fromSize(
                           size: const Size.fromRadius(100),
-                          child: Image.asset('assets/images/chatImage.png'),
+                          child: Image.asset('assets/images/splash_logo.png'),
                         ),
                       ),
                       const Text(

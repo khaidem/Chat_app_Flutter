@@ -21,11 +21,15 @@ class _ListUserPageState extends State<ListUserPage> {
   final CollectionReference collectionRef =
       FirebaseFirestore.instance.collection('user_accounts');
   int count = 2;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormFieldState> _nameFormKey = GlobalKey<FormFieldState>();
 
   final List _selectCategory = [];
   TabController? _tabController;
 
   final _auth = FirebaseFirestore.instance;
+
+  final bool _resetValidate = false;
 
 //** For Selecting list of User id Form login */
 // =================================================
@@ -48,29 +52,31 @@ class _ListUserPageState extends State<ListUserPage> {
 //**  Group submit creating */
 // ===========================
   void _submitGroup() {
-    FocusScope.of(context).unfocus();
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      FocusScope.of(context).unfocus();
 
-    //**First pop form showDialog */
-    Navigator.pop(context);
-    //** Second pop form ListUserPage */
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => const TabBarRouter(),
-      ),
-    );
+      context.read<FireStoreProvider>().addGroup(
+            groupName.text.trim(),
+            _selectCategory,
+          );
 
-    context.read<FireStoreProvider>().addGroup(
-          groupName.text.trim(),
-          _selectCategory,
-        );
-    // ==========================================================
-    //*** If w want to pop to the last page not use in show dialog when we uses it
-    // * it will not work*/
-    // Navigator.of(context).popUntil((route) => route.isFirst);
-
-    groupName.clear();
+      // ==========================================================
+      //*** If w want to pop to the last page not use in show dialog when we uses it
+      // * it will not work*/
+      // Navigator.of(context).popUntil((route) => route.isFirst);
+      //**First pop form showDialog */
+      Navigator.pop(context);
+      //** Second pop form ListUserPage */
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => const TabBarRouter(),
+        ),
+      );
+      groupName.clear();
+    }
   }
 
   @override
@@ -130,101 +136,117 @@ class _ListUserPageState extends State<ListUserPage> {
         backgroundColor: mainColors,
         onPressed: () {
           showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(32.0),
+            context: context,
+            barrierDismissible: true,
+            builder: (_) {
+              return AlertDialog(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(32.0),
+                  ),
+                ),
+                content: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text(
+                            "Enter Group Name",
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                        ],
                       ),
-                    ),
-                    content: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Text(
-                              "Enter Group Name",
-                              style: TextStyle(fontSize: 24.0),
-                            ),
-                          ],
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        // const Divider(
-                        //   color: Colors.grey,
-                        //   height: 4.0,
-                        // ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 30.0, right: 30.0),
-                            child: TextField(
-                              controller: groupName,
-                              decoration: const InputDecoration(
-                                hintText: "Enter Group Name",
-                                border: InputBorder.none,
-                              ),
-                              maxLines: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 30.0,
+                            right: 30.0,
+                          ),
+                          child: TextFormField(
+                            key: _nameFormKey,
+                            onChanged: (value) {
+                              setState(() {
+                                _nameFormKey.currentState!.validate();
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please Entry group Name';
+                              }
+                              return null;
+                            },
+                            controller: groupName,
+                            decoration: const InputDecoration(
+                              hintText: "Enter Group Name",
+                              border: InputBorder.none,
                             ),
+                            maxLines: 8,
                           ),
                         ),
-                        // const Divider(
-                        //   color: Colors.grey,
-                        //   height: 4.0,
-                        // ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              style:
-                                  ElevatedButton.styleFrom(primary: mainColors),
-                              onPressed: () {
-                                _submitGroup();
-                              },
-                              child: const Text('Submit'),
-                            ),
-                            ElevatedButton(
-                              style:
-                                  ElevatedButton.styleFrom(primary: mainColors),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                          ],
-                        )
-                        // InkWell(
-                        //   onTap: () {
-                        //     _submitGroup();
-                        //   },
-                        //   child: Container(
-                        //     padding:
-                        //         const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                        //     decoration: const BoxDecoration(
-                        //       color: mainColors,
-                        //       borderRadius: BorderRadius.only(
-                        //           bottomLeft: Radius.circular(32.0),
-                        //           bottomRight: Radius.circular(32.0)),
-                        //     ),
-                        //     child: const Text(
-                        //       'Submit',
-                        //       style: TextStyle(color: Colors.white),
-                        //       textAlign: TextAlign.center,
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ));
-              });
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: mainColors),
+                            onPressed: () {
+                              _submitGroup();
+                            },
+                            child: const Text('Submit'),
+                          ),
+                          ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: mainColors),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                        ],
+                      )
+                      // InkWell(
+                      //   onTap: () {
+                      //     _submitGroup();
+                      //   },
+                      //   child: Container(
+                      //     padding:
+                      //         const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      //     decoration: const BoxDecoration(
+                      //       color: mainColors,
+                      //       borderRadius: BorderRadius.only(
+                      //           bottomLeft: Radius.circular(32.0),
+                      //           bottomRight: Radius.circular(32.0)),
+                      //     ),
+                      //     child: const Text(
+                      //       'Submit',
+                      //       style: TextStyle(color: Colors.white),
+                      //       textAlign: TextAlign.center,
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
         child: _selectCategory.isEmpty
             ? const Icon(Icons.add)
