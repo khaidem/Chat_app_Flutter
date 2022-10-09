@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:goole_sigin_firebase/src/router/app.router.gr.dart';
+import 'package:goole_sigin_firebase/src/router/router.dart';
 
 class TabBarRoot extends StatelessWidget {
   const TabBarRoot({Key? key}) : super(key: key);
@@ -8,10 +8,7 @@ class TabBarRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      routes: const [
-        HomeRoute(),
-        ListUserRoute(),
-      ],
+      routes: const [HomeRoute(), OnBoardingRoute()],
       builder: (context, child, controller) {
         // final tabsRouter = AutoTabsRouter.of(context);
         return Scaffold(

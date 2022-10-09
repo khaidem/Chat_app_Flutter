@@ -14,9 +14,13 @@ class AuthFlow extends StatelessWidget {
       routes: (context) {
         switch (state.status) {
           case AuthStatus.islogin:
-            return [const HomeRoute()];
+            return [
+              const HomeRoute(),
+            ];
           case AuthStatus.isLogout:
-            return [const ListUserRoute()];
+            return [
+              const OnBoardingRoute(),
+            ];
         }
       },
     );
