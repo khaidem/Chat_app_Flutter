@@ -8,10 +8,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../example.dart';
 
 class AuthProvider with ChangeNotifier {
-  final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
-
+  final googleSignIn = GoogleSignIn();
   String? name;
   String? email;
   String? password;
@@ -21,19 +20,17 @@ class AuthProvider with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 //** For Google SigIn */
-  Future googleSigIn() async {
+  Future sigIn(
+    BuildContext context,
+  ) async {
     try {
       final googleUser = await googleSignIn.signIn();
 
-      final ggAuth = await googleUser!.authentication;
-
-      log(ggAuth.idToken.toString());
-
+      // if (_user == null) {
+      //   return null;
+      // }
+      if (googleUser == null) return;
       _user = googleUser;
-      _user = googleUser;
-      if (_user == null) {
-        return;
-      }
 
       //** Obtain the auth details form the request */
       final googleAuth = await googleUser.authentication;
@@ -48,6 +45,7 @@ class AuthProvider with ChangeNotifier {
         credential.toString(),
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
+
       _firestore.collection('user_accounts').doc(_auth.currentUser!.uid).set({
         'active': true,
         'created_at': Timestamp.now(),
@@ -55,6 +53,7 @@ class AuthProvider with ChangeNotifier {
         'phone_number': '',
         'uid': _auth.currentUser!.uid,
       });
+      notifyListeners();
     } on FirebaseException catch (error) {
       debugPrint(error.toString());
       rethrow;
